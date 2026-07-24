@@ -1,0 +1,1027 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where empty lines have been removed, line numbers have been added.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: android/**, ios/**, web/**, windows/**, macos/**, linux/**, assets/**, build/**, .dart_tool/**, .github/**, .vscode/**, .idea/**, pubspec.lock, .metadata, *.svg, *.png, *.jpg, *.jpeg, *.webp, *.ttf, *.otf, *.gif, *.ico, *.g.dart, *.freezed.dart, repomix-output.xml
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Empty lines have been removed from all files
+- Line numbers have been added to the beginning of each line
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+lib/
+  main.dart
+packages/
+  cloud_storage_api/
+    lib/
+      cloud_storage_api.dart
+    test/
+      cloud_storage_api_test.dart
+    .gitignore
+    .metadata
+    analysis_options.yaml
+    CHANGELOG.md
+    LICENSE
+    pubspec.yaml
+    README.md
+  crm_repository/
+    lib/
+      crm_repository.dart
+    test/
+      crm_repository_test.dart
+    .gitignore
+    .metadata
+    analysis_options.yaml
+    CHANGELOG.md
+    LICENSE
+    pubspec.yaml
+    README.md
+  local_storage_api/
+    lib/
+      local_storage_api.dart
+    test/
+      local_storage_api_test.dart
+    .gitignore
+    .metadata
+    analysis_options.yaml
+    CHANGELOG.md
+    LICENSE
+    pubspec.yaml
+    README.md
+test/
+  widget_test.dart
+.gitignore
+analysis_options.yaml
+pubspec.yaml
+README.md
+repomix.config.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="lib/main.dart">
+  1: import 'package:flutter/material.dart';
+  2: void main() {
+  3:   runApp(const MyApp());
+  4: }
+  5: class MyApp extends StatelessWidget {
+  6:   const MyApp({super.key});
+  7:   // This widget is the root of your application.
+  8:   @override
+  9:   Widget build(BuildContext context) {
+ 10:     return MaterialApp(
+ 11:       title: 'Flutter Demo',
+ 12:       theme: ThemeData(
+ 13:         // This is the theme of your application.
+ 14:         //
+ 15:         // TRY THIS: Try running your application with "flutter run". You'll see
+ 16:         // the application has a purple toolbar. Then, without quitting the app,
+ 17:         // try changing the seedColor in the colorScheme below to Colors.green
+ 18:         // and then invoke "hot reload" (save your changes or press the "hot
+ 19:         // reload" button in a Flutter-supported IDE, or press "r" if you used
+ 20:         // the command line to start the app).
+ 21:         //
+ 22:         // Notice that the counter didn't reset back to zero; the application
+ 23:         // state is not lost during the reload. To reset the state, use hot
+ 24:         // restart instead.
+ 25:         //
+ 26:         // This works for code too, not just values: Most code changes can be
+ 27:         // tested with just a hot reload.
+ 28:         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+ 29:       ),
+ 30:       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+ 31:     );
+ 32:   }
+ 33: }
+ 34: class MyHomePage extends StatefulWidget {
+ 35:   const MyHomePage({super.key, required this.title});
+ 36:   // This widget is the home page of your application. It is stateful, meaning
+ 37:   // that it has a State object (defined below) that contains fields that affect
+ 38:   // how it looks.
+ 39:   // This class is the configuration for the state. It holds the values (in this
+ 40:   // case the title) provided by the parent (in this case the App widget) and
+ 41:   // used by the build method of the State. Fields in a Widget subclass are
+ 42:   // always marked "final".
+ 43:   final String title;
+ 44:   @override
+ 45:   State<MyHomePage> createState() => _MyHomePageState();
+ 46: }
+ 47: class _MyHomePageState extends State<MyHomePage> {
+ 48:   int _counter = 0;
+ 49:   void _incrementCounter() {
+ 50:     setState(() {
+ 51:       // This call to setState tells the Flutter framework that something has
+ 52:       // changed in this State, which causes it to rerun the build method below
+ 53:       // so that the display can reflect the updated values. If we changed
+ 54:       // _counter without calling setState(), then the build method would not be
+ 55:       // called again, and so nothing would appear to happen.
+ 56:       _counter++;
+ 57:     });
+ 58:   }
+ 59:   @override
+ 60:   Widget build(BuildContext context) {
+ 61:     // This method is rerun every time setState is called, for instance as done
+ 62:     // by the _incrementCounter method above.
+ 63:     //
+ 64:     // The Flutter framework has been optimized to make rerunning build methods
+ 65:     // fast, so that you can just rebuild anything that needs updating rather
+ 66:     // than having to individually change instances of widgets.
+ 67:     return Scaffold(
+ 68:       appBar: AppBar(
+ 69:         // TRY THIS: Try changing the color here to a specific color (to
+ 70:         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+ 71:         // change color while the other colors stay the same.
+ 72:         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+ 73:         // Here we take the value from the MyHomePage object that was created by
+ 74:         // the App.build method, and use it to set our appbar title.
+ 75:         title: Text(widget.title),
+ 76:       ),
+ 77:       body: Center(
+ 78:         // Center is a layout widget. It takes a single child and positions it
+ 79:         // in the middle of the parent.
+ 80:         child: Column(
+ 81:           // Column is also a layout widget. It takes a list of children and
+ 82:           // arranges them vertically. By default, it sizes itself to fit its
+ 83:           // children horizontally, and tries to be as tall as its parent.
+ 84:           //
+ 85:           // Column has various properties to control how it sizes itself and
+ 86:           // how it positions its children. Here we use mainAxisAlignment to
+ 87:           // center the children vertically; the main axis here is the vertical
+ 88:           // axis because Columns are vertical (the cross axis would be
+ 89:           // horizontal).
+ 90:           //
+ 91:           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+ 92:           // action in the IDE, or press "p" in the console), to see the
+ 93:           // wireframe for each widget.
+ 94:           mainAxisAlignment: .center,
+ 95:           children: [
+ 96:             const Text('You have pushed the button this many times:'),
+ 97:             Text(
+ 98:               '$_counter',
+ 99:               style: Theme.of(context).textTheme.headlineMedium,
+100:             ),
+101:           ],
+102:         ),
+103:       ),
+104:       floatingActionButton: FloatingActionButton(
+105:         onPressed: _incrementCounter,
+106:         tooltip: 'Increment',
+107:         child: const Icon(Icons.add),
+108:       ),
+109:     );
+110:   }
+111: }
+</file>
+
+<file path="packages/cloud_storage_api/lib/cloud_storage_api.dart">
+1: /// A Calculator.
+2: class Calculator {
+3:   /// Returns [value] plus 1.
+4:   int addOne(int value) => value + 1;
+5: }
+</file>
+
+<file path="packages/cloud_storage_api/test/cloud_storage_api_test.dart">
+ 1: import 'package:flutter_test/flutter_test.dart';
+ 2: import 'package:cloud_storage_api/cloud_storage_api.dart';
+ 3: void main() {
+ 4:   test('adds one to input values', () {
+ 5:     final calculator = Calculator();
+ 6:     expect(calculator.addOne(2), 3);
+ 7:     expect(calculator.addOne(-7), -6);
+ 8:     expect(calculator.addOne(0), 1);
+ 9:   });
+10: }
+</file>
+
+<file path="packages/cloud_storage_api/.gitignore">
+ 1: # Miscellaneous
+ 2: *.class
+ 3: *.log
+ 4: *.pyc
+ 5: *.swp
+ 6: .DS_Store
+ 7: .atom/
+ 8: .buildlog/
+ 9: .history
+10: .svn/
+11: migrate_working_dir/
+12: 
+13: # IntelliJ related
+14: *.iml
+15: *.ipr
+16: *.iws
+17: .idea/
+18: 
+19: # The .vscode folder contains launch configuration and tasks you configure in
+20: # VS Code which you may wish to be included in version control, so this line
+21: # is commented out by default.
+22: #.vscode/
+23: 
+24: # Flutter/Dart/Pub related
+25: # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+26: /pubspec.lock
+27: **/doc/api/
+28: .dart_tool/
+29: .flutter-plugins-dependencies
+30: /build/
+31: /coverage/
+</file>
+
+<file path="packages/cloud_storage_api/.metadata">
+ 1: # This file tracks properties of this Flutter project.
+ 2: # Used by Flutter tool to assess capabilities and perform upgrades etc.
+ 3: #
+ 4: # This file should be version controlled and should not be manually edited.
+ 5: 
+ 6: version:
+ 7:   revision: "559ffa3f75e7402d65a8def9c28389a9b2e6fe42"
+ 8:   channel: "stable"
+ 9: 
+10: project_type: package
+</file>
+
+<file path="packages/cloud_storage_api/analysis_options.yaml">
+1: include: package:flutter_lints/flutter.yaml
+2: # Additional information about this file can be found at
+3: # https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="packages/cloud_storage_api/CHANGELOG.md">
+1: ## 0.0.1
+2: 
+3: * TODO: Describe initial release.
+</file>
+
+<file path="packages/cloud_storage_api/LICENSE">
+1: TODO: Add your license here.
+</file>
+
+<file path="packages/cloud_storage_api/pubspec.yaml">
+ 1: name: cloud_storage_api
+ 2: description: "A new Flutter package project."
+ 3: version: 0.0.1
+ 4: homepage:
+ 5: environment:
+ 6:   sdk: ^3.12.0
+ 7:   flutter: ">=1.17.0"
+ 8: dependencies:
+ 9:   flutter:
+10:     sdk: flutter
+11: dev_dependencies:
+12:   flutter_test:
+13:     sdk: flutter
+14:   flutter_lints: ^6.0.0
+15: # For information on the generic Dart part of this file, see the
+16: # following page: https://dart.dev/tools/pub/pubspec
+17: # The following section is specific to Flutter packages.
+18: flutter:
+19:   # To add assets to your package, add an assets section, like this:
+20:   # assets:
+21:   #   - images/a_dot_burr.jpeg
+22:   #   - images/a_dot_ham.jpeg
+23:   #
+24:   # For details regarding assets in packages, see
+25:   # https://flutter.dev/to/asset-from-package
+26:   #
+27:   # An image asset can refer to one or more resolution-specific "variants", see
+28:   # https://flutter.dev/to/resolution-aware-images
+29:   # To add custom fonts to your package, add a fonts section here,
+30:   # in this "flutter" section. Each entry in this list should have a
+31:   # "family" key with the font family name, and a "fonts" key with a
+32:   # list giving the asset and other descriptors for the font. For
+33:   # example:
+34:   # fonts:
+35:   #   - family: Schyler
+36:   #     fonts:
+37:   #       - asset: fonts/Schyler-Regular.ttf
+38:   #       - asset: fonts/Schyler-Italic.ttf
+39:   #         style: italic
+40:   #   - family: Trajan Pro
+41:   #     fonts:
+42:   #       - asset: fonts/TrajanPro.ttf
+43:   #       - asset: fonts/TrajanPro_Bold.ttf
+44:   #         weight: 700
+45:   #
+46:   # For details regarding fonts in packages, see
+47:   # https://flutter.dev/to/font-from-package
+</file>
+
+<file path="packages/cloud_storage_api/README.md">
+ 1: <!--
+ 2: This README describes the package. If you publish this package to pub.dev,
+ 3: this README's contents appear on the landing page for your package.
+ 4: 
+ 5: For information about how to write a good package README, see the guide for
+ 6: [writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+ 7: 
+ 8: For general information about developing packages, see the Dart guide for
+ 9: [creating packages](https://dart.dev/guides/libraries/create-packages)
+10: and the Flutter guide for
+11: [developing packages and plugins](https://flutter.dev/to/develop-packages).
+12: -->
+13: 
+14: TODO: Put a short description of the package here that helps potential users
+15: know whether this package might be useful for them.
+16: 
+17: ## Features
+18: 
+19: TODO: List what your package can do. Maybe include images, gifs, or videos.
+20: 
+21: ## Getting started
+22: 
+23: TODO: List prerequisites and provide or point to information on how to
+24: start using the package.
+25: 
+26: ## Usage
+27: 
+28: TODO: Include short and useful examples for package users. Add longer examples
+29: to `/example` folder.
+30: 
+31: ```dart
+32: const like = 'sample';
+33: ```
+34: 
+35: ## Additional information
+36: 
+37: TODO: Tell users more about the package: where to find more information, how to
+38: contribute to the package, how to file issues, what response they can expect
+39: from the package authors, and more.
+</file>
+
+<file path="packages/crm_repository/lib/crm_repository.dart">
+1: /// A Calculator.
+2: class Calculator {
+3:   /// Returns [value] plus 1.
+4:   int addOne(int value) => value + 1;
+5: }
+</file>
+
+<file path="packages/crm_repository/test/crm_repository_test.dart">
+ 1: import 'package:flutter_test/flutter_test.dart';
+ 2: import 'package:crm_repository/crm_repository.dart';
+ 3: void main() {
+ 4:   test('adds one to input values', () {
+ 5:     final calculator = Calculator();
+ 6:     expect(calculator.addOne(2), 3);
+ 7:     expect(calculator.addOne(-7), -6);
+ 8:     expect(calculator.addOne(0), 1);
+ 9:   });
+10: }
+</file>
+
+<file path="packages/crm_repository/.gitignore">
+ 1: # Miscellaneous
+ 2: *.class
+ 3: *.log
+ 4: *.pyc
+ 5: *.swp
+ 6: .DS_Store
+ 7: .atom/
+ 8: .buildlog/
+ 9: .history
+10: .svn/
+11: migrate_working_dir/
+12: 
+13: # IntelliJ related
+14: *.iml
+15: *.ipr
+16: *.iws
+17: .idea/
+18: 
+19: # The .vscode folder contains launch configuration and tasks you configure in
+20: # VS Code which you may wish to be included in version control, so this line
+21: # is commented out by default.
+22: #.vscode/
+23: 
+24: # Flutter/Dart/Pub related
+25: # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+26: /pubspec.lock
+27: **/doc/api/
+28: .dart_tool/
+29: .flutter-plugins-dependencies
+30: /build/
+31: /coverage/
+</file>
+
+<file path="packages/crm_repository/.metadata">
+ 1: # This file tracks properties of this Flutter project.
+ 2: # Used by Flutter tool to assess capabilities and perform upgrades etc.
+ 3: #
+ 4: # This file should be version controlled and should not be manually edited.
+ 5: 
+ 6: version:
+ 7:   revision: "559ffa3f75e7402d65a8def9c28389a9b2e6fe42"
+ 8:   channel: "stable"
+ 9: 
+10: project_type: package
+</file>
+
+<file path="packages/crm_repository/analysis_options.yaml">
+1: include: package:flutter_lints/flutter.yaml
+2: # Additional information about this file can be found at
+3: # https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="packages/crm_repository/CHANGELOG.md">
+1: ## 0.0.1
+2: 
+3: * TODO: Describe initial release.
+</file>
+
+<file path="packages/crm_repository/LICENSE">
+1: TODO: Add your license here.
+</file>
+
+<file path="packages/crm_repository/pubspec.yaml">
+ 1: name: crm_repository
+ 2: description: "A new Flutter package project."
+ 3: version: 0.0.1
+ 4: homepage:
+ 5: environment:
+ 6:   sdk: ^3.12.0
+ 7:   flutter: ">=1.17.0"
+ 8: dependencies:
+ 9:   flutter:
+10:     sdk: flutter
+11: dev_dependencies:
+12:   flutter_test:
+13:     sdk: flutter
+14:   flutter_lints: ^6.0.0
+15: # For information on the generic Dart part of this file, see the
+16: # following page: https://dart.dev/tools/pub/pubspec
+17: # The following section is specific to Flutter packages.
+18: flutter:
+19:   # To add assets to your package, add an assets section, like this:
+20:   # assets:
+21:   #   - images/a_dot_burr.jpeg
+22:   #   - images/a_dot_ham.jpeg
+23:   #
+24:   # For details regarding assets in packages, see
+25:   # https://flutter.dev/to/asset-from-package
+26:   #
+27:   # An image asset can refer to one or more resolution-specific "variants", see
+28:   # https://flutter.dev/to/resolution-aware-images
+29:   # To add custom fonts to your package, add a fonts section here,
+30:   # in this "flutter" section. Each entry in this list should have a
+31:   # "family" key with the font family name, and a "fonts" key with a
+32:   # list giving the asset and other descriptors for the font. For
+33:   # example:
+34:   # fonts:
+35:   #   - family: Schyler
+36:   #     fonts:
+37:   #       - asset: fonts/Schyler-Regular.ttf
+38:   #       - asset: fonts/Schyler-Italic.ttf
+39:   #         style: italic
+40:   #   - family: Trajan Pro
+41:   #     fonts:
+42:   #       - asset: fonts/TrajanPro.ttf
+43:   #       - asset: fonts/TrajanPro_Bold.ttf
+44:   #         weight: 700
+45:   #
+46:   # For details regarding fonts in packages, see
+47:   # https://flutter.dev/to/font-from-package
+</file>
+
+<file path="packages/crm_repository/README.md">
+ 1: <!--
+ 2: This README describes the package. If you publish this package to pub.dev,
+ 3: this README's contents appear on the landing page for your package.
+ 4: 
+ 5: For information about how to write a good package README, see the guide for
+ 6: [writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+ 7: 
+ 8: For general information about developing packages, see the Dart guide for
+ 9: [creating packages](https://dart.dev/guides/libraries/create-packages)
+10: and the Flutter guide for
+11: [developing packages and plugins](https://flutter.dev/to/develop-packages).
+12: -->
+13: 
+14: TODO: Put a short description of the package here that helps potential users
+15: know whether this package might be useful for them.
+16: 
+17: ## Features
+18: 
+19: TODO: List what your package can do. Maybe include images, gifs, or videos.
+20: 
+21: ## Getting started
+22: 
+23: TODO: List prerequisites and provide or point to information on how to
+24: start using the package.
+25: 
+26: ## Usage
+27: 
+28: TODO: Include short and useful examples for package users. Add longer examples
+29: to `/example` folder.
+30: 
+31: ```dart
+32: const like = 'sample';
+33: ```
+34: 
+35: ## Additional information
+36: 
+37: TODO: Tell users more about the package: where to find more information, how to
+38: contribute to the package, how to file issues, what response they can expect
+39: from the package authors, and more.
+</file>
+
+<file path="packages/local_storage_api/lib/local_storage_api.dart">
+1: /// A Calculator.
+2: class Calculator {
+3:   /// Returns [value] plus 1.
+4:   int addOne(int value) => value + 1;
+5: }
+</file>
+
+<file path="packages/local_storage_api/test/local_storage_api_test.dart">
+ 1: import 'package:flutter_test/flutter_test.dart';
+ 2: import 'package:local_storage_api/local_storage_api.dart';
+ 3: void main() {
+ 4:   test('adds one to input values', () {
+ 5:     final calculator = Calculator();
+ 6:     expect(calculator.addOne(2), 3);
+ 7:     expect(calculator.addOne(-7), -6);
+ 8:     expect(calculator.addOne(0), 1);
+ 9:   });
+10: }
+</file>
+
+<file path="packages/local_storage_api/.gitignore">
+ 1: # Miscellaneous
+ 2: *.class
+ 3: *.log
+ 4: *.pyc
+ 5: *.swp
+ 6: .DS_Store
+ 7: .atom/
+ 8: .buildlog/
+ 9: .history
+10: .svn/
+11: migrate_working_dir/
+12: 
+13: # IntelliJ related
+14: *.iml
+15: *.ipr
+16: *.iws
+17: .idea/
+18: 
+19: # The .vscode folder contains launch configuration and tasks you configure in
+20: # VS Code which you may wish to be included in version control, so this line
+21: # is commented out by default.
+22: #.vscode/
+23: 
+24: # Flutter/Dart/Pub related
+25: # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+26: /pubspec.lock
+27: **/doc/api/
+28: .dart_tool/
+29: .flutter-plugins-dependencies
+30: /build/
+31: /coverage/
+</file>
+
+<file path="packages/local_storage_api/.metadata">
+ 1: # This file tracks properties of this Flutter project.
+ 2: # Used by Flutter tool to assess capabilities and perform upgrades etc.
+ 3: #
+ 4: # This file should be version controlled and should not be manually edited.
+ 5: 
+ 6: version:
+ 7:   revision: "559ffa3f75e7402d65a8def9c28389a9b2e6fe42"
+ 8:   channel: "stable"
+ 9: 
+10: project_type: package
+</file>
+
+<file path="packages/local_storage_api/analysis_options.yaml">
+1: include: package:flutter_lints/flutter.yaml
+2: # Additional information about this file can be found at
+3: # https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="packages/local_storage_api/CHANGELOG.md">
+1: ## 0.0.1
+2: 
+3: * TODO: Describe initial release.
+</file>
+
+<file path="packages/local_storage_api/LICENSE">
+1: TODO: Add your license here.
+</file>
+
+<file path="packages/local_storage_api/pubspec.yaml">
+ 1: name: local_storage_api
+ 2: description: "A new Flutter package project."
+ 3: version: 0.0.1
+ 4: homepage:
+ 5: environment:
+ 6:   sdk: ^3.12.0
+ 7:   flutter: ">=1.17.0"
+ 8: dependencies:
+ 9:   flutter:
+10:     sdk: flutter
+11: dev_dependencies:
+12:   flutter_test:
+13:     sdk: flutter
+14:   flutter_lints: ^6.0.0
+15: # For information on the generic Dart part of this file, see the
+16: # following page: https://dart.dev/tools/pub/pubspec
+17: # The following section is specific to Flutter packages.
+18: flutter:
+19:   # To add assets to your package, add an assets section, like this:
+20:   # assets:
+21:   #   - images/a_dot_burr.jpeg
+22:   #   - images/a_dot_ham.jpeg
+23:   #
+24:   # For details regarding assets in packages, see
+25:   # https://flutter.dev/to/asset-from-package
+26:   #
+27:   # An image asset can refer to one or more resolution-specific "variants", see
+28:   # https://flutter.dev/to/resolution-aware-images
+29:   # To add custom fonts to your package, add a fonts section here,
+30:   # in this "flutter" section. Each entry in this list should have a
+31:   # "family" key with the font family name, and a "fonts" key with a
+32:   # list giving the asset and other descriptors for the font. For
+33:   # example:
+34:   # fonts:
+35:   #   - family: Schyler
+36:   #     fonts:
+37:   #       - asset: fonts/Schyler-Regular.ttf
+38:   #       - asset: fonts/Schyler-Italic.ttf
+39:   #         style: italic
+40:   #   - family: Trajan Pro
+41:   #     fonts:
+42:   #       - asset: fonts/TrajanPro.ttf
+43:   #       - asset: fonts/TrajanPro_Bold.ttf
+44:   #         weight: 700
+45:   #
+46:   # For details regarding fonts in packages, see
+47:   # https://flutter.dev/to/font-from-package
+</file>
+
+<file path="packages/local_storage_api/README.md">
+ 1: <!--
+ 2: This README describes the package. If you publish this package to pub.dev,
+ 3: this README's contents appear on the landing page for your package.
+ 4: 
+ 5: For information about how to write a good package README, see the guide for
+ 6: [writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+ 7: 
+ 8: For general information about developing packages, see the Dart guide for
+ 9: [creating packages](https://dart.dev/guides/libraries/create-packages)
+10: and the Flutter guide for
+11: [developing packages and plugins](https://flutter.dev/to/develop-packages).
+12: -->
+13: 
+14: TODO: Put a short description of the package here that helps potential users
+15: know whether this package might be useful for them.
+16: 
+17: ## Features
+18: 
+19: TODO: List what your package can do. Maybe include images, gifs, or videos.
+20: 
+21: ## Getting started
+22: 
+23: TODO: List prerequisites and provide or point to information on how to
+24: start using the package.
+25: 
+26: ## Usage
+27: 
+28: TODO: Include short and useful examples for package users. Add longer examples
+29: to `/example` folder.
+30: 
+31: ```dart
+32: const like = 'sample';
+33: ```
+34: 
+35: ## Additional information
+36: 
+37: TODO: Tell users more about the package: where to find more information, how to
+38: contribute to the package, how to file issues, what response they can expect
+39: from the package authors, and more.
+</file>
+
+<file path="test/widget_test.dart">
+ 1: // This is a basic Flutter widget test.
+ 2: //
+ 3: // To perform an interaction with a widget in your test, use the WidgetTester
+ 4: // utility in the flutter_test package. For example, you can send tap and scroll
+ 5: // gestures. You can also use WidgetTester to find child widgets in the widget
+ 6: // tree, read text, and verify that the values of widget properties are correct.
+ 7: import 'package:flutter/material.dart';
+ 8: import 'package:flutter_test/flutter_test.dart';
+ 9: import 'package:auto_sms/main.dart';
+10: void main() {
+11:   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+12:     // Build our app and trigger a frame.
+13:     await tester.pumpWidget(const MyApp());
+14:     // Verify that our counter starts at 0.
+15:     expect(find.text('0'), findsOneWidget);
+16:     expect(find.text('1'), findsNothing);
+17:     // Tap the '+' icon and trigger a frame.
+18:     await tester.tap(find.byIcon(Icons.add));
+19:     await tester.pump();
+20:     // Verify that our counter has incremented.
+21:     expect(find.text('0'), findsNothing);
+22:     expect(find.text('1'), findsOneWidget);
+23:   });
+24: }
+</file>
+
+<file path=".gitignore">
+ 1: # Miscellaneous
+ 2: *.class
+ 3: *.log
+ 4: *.pyc
+ 5: *.swp
+ 6: .DS_Store
+ 7: .atom/
+ 8: .build/
+ 9: .buildlog/
+10: .history
+11: .svn/
+12: .swiftpm/
+13: migrate_working_dir/
+14: 
+15: # IntelliJ related
+16: *.iml
+17: *.ipr
+18: *.iws
+19: .idea/
+20: 
+21: # The .vscode folder contains launch configuration and tasks you configure in
+22: # VS Code which you may wish to be included in version control, so this line
+23: # is commented out by default.
+24: #.vscode/
+25: 
+26: # Flutter/Dart/Pub related
+27: **/doc/api/
+28: **/ios/Flutter/.last_build_id
+29: .dart_tool/
+30: .flutter-plugins-dependencies
+31: .pub-cache/
+32: .pub/
+33: /build/
+34: /coverage/
+35: 
+36: # Symbolication related
+37: app.*.symbols
+38: 
+39: # Obfuscation related
+40: app.*.map.json
+41: 
+42: # Android Studio will place build artifacts here
+43: /android/app/debug
+44: /android/app/profile
+45: /android/app/release
+</file>
+
+<file path="analysis_options.yaml">
+ 1: # This file configures the analyzer, which statically analyzes Dart code to
+ 2: # check for errors, warnings, and lints.
+ 3: #
+ 4: # The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+ 5: # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+ 6: # invoked from the command line by running `flutter analyze`.
+ 7: # The following line activates a set of recommended lints for Flutter apps,
+ 8: # packages, and plugins designed to encourage good coding practices.
+ 9: include: package:flutter_lints/flutter.yaml
+10: linter:
+11:   # The lint rules applied to this project can be customized in the
+12:   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+13:   # included above or to enable additional rules. A list of all available lints
+14:   # and their documentation is published at https://dart.dev/lints.
+15:   #
+16:   # Instead of disabling a lint rule for the entire project in the
+17:   # section below, it can also be suppressed for a single line of code
+18:   # or a specific dart file by using the `// ignore: name_of_lint` and
+19:   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+20:   # producing the lint.
+21:   rules:
+22:     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+23:     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+24: # Additional information about this file can be found at
+25: # https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="pubspec.yaml">
+ 1: name: auto_sms
+ 2: description: "A new Flutter project."
+ 3: # The following line prevents the package from being accidentally published to
+ 4: # pub.dev using `flutter pub publish`. This is preferred for private packages.
+ 5: publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+ 6: # The following defines the version and build number for your application.
+ 7: # A version number is three numbers separated by dots, like 1.2.43
+ 8: # followed by an optional build number separated by a +.
+ 9: # Both the version and the builder number may be overridden in flutter
+10: # build by specifying --build-name and --build-number, respectively.
+11: # In Android, build-name is used as versionName while build-number used as versionCode.
+12: # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+13: # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+14: # Read more about iOS versioning at
+15: # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+16: # In Windows, build-name is used as the major, minor, and patch parts
+17: # of the product and file versions while build-number is used as the build suffix.
+18: version: 1.0.0+1
+19: environment:
+20:   sdk: ^3.12.0
+21: # Dependencies specify other packages that your package needs in order to work.
+22: # To automatically upgrade your package dependencies to the latest versions
+23: # consider running `flutter pub upgrade --major-versions`. Alternatively,
+24: # dependencies can be manually updated by changing the version numbers below to
+25: # the latest version available on pub.dev. To see which dependencies have newer
+26: # versions available, run `flutter pub outdated`.
+27: dependencies:
+28:   flutter:
+29:     sdk: flutter
+30:   # The following adds the Cupertino Icons font to your application.
+31:   # Use with the CupertinoIcons class for iOS style icons.
+32:   cupertino_icons: ^1.0.8
+33: dev_dependencies:
+34:   flutter_test:
+35:     sdk: flutter
+36:   # The "flutter_lints" package below contains a set of recommended lints to
+37:   # encourage good coding practices. The lint set provided by the package is
+38:   # activated in the `analysis_options.yaml` file located at the root of your
+39:   # package. See that file for information about deactivating specific lint
+40:   # rules and activating additional ones.
+41:   flutter_lints: ^6.0.0
+42: # For information on the generic Dart part of this file, see the
+43: # following page: https://dart.dev/tools/pub/pubspec
+44: # The following section is specific to Flutter packages.
+45: flutter:
+46:   # The following line ensures that the Material Icons font is
+47:   # included with your application, so that you can use the icons in
+48:   # the material Icons class.
+49:   uses-material-design: true
+50:   # To add assets to your application, add an assets section, like this:
+51:   # assets:
+52:   #   - images/a_dot_burr.jpeg
+53:   #   - images/a_dot_ham.jpeg
+54:   # An image asset can refer to one or more resolution-specific "variants", see
+55:   # https://flutter.dev/to/resolution-aware-images
+56:   # For details regarding adding assets from package dependencies, see
+57:   # https://flutter.dev/to/asset-from-package
+58:   # To add custom fonts to your application, add a fonts section here,
+59:   # in this "flutter" section. Each entry in this list should have a
+60:   # "family" key with the font family name, and a "fonts" key with a
+61:   # list giving the asset and other descriptors for the font. For
+62:   # example:
+63:   # fonts:
+64:   #   - family: Schyler
+65:   #     fonts:
+66:   #       - asset: fonts/Schyler-Regular.ttf
+67:   #       - asset: fonts/Schyler-Italic.ttf
+68:   #         style: italic
+69:   #   - family: Trajan Pro
+70:   #     fonts:
+71:   #       - asset: fonts/TrajanPro.ttf
+72:   #       - asset: fonts/TrajanPro_Bold.ttf
+73:   #         weight: 700
+74:   #
+75:   # For details regarding fonts from package dependencies,
+76:   # see https://flutter.dev/to/font-from-package
+</file>
+
+<file path="repomix.config.json">
+ 1: {
+ 2:   "$schema": "https://repomix.com/schemas/latest/schema.json",
+ 3:   "output": {
+ 4:     "filePath": "repomix-output.xml",
+ 5:     "style": "xml",
+ 6:     "removeComments": false,
+ 7:     "removeEmptyLines": true,
+ 8:     "showLineNumbers": true
+ 9:   },
+10:   "ignore": {
+11:     "useGitignore": true,
+12:     "useDefaultPatterns": true,
+13:     "customPatterns": [
+14:       "android/**",
+15:       "ios/**",
+16:       "web/**",
+17:       "windows/**",
+18:       "macos/**",
+19:       "linux/**",
+20:       "assets/**",
+21:       "build/**",
+22:       ".dart_tool/**",
+23:       ".github/**",
+24:       ".vscode/**",
+25:       ".idea/**",
+26:       "pubspec.lock",
+27:       ".metadata",
+28:       "*.svg",
+29:       "*.png",
+30:       "*.jpg",
+31:       "*.jpeg",
+32:       "*.webp",
+33:       "*.ttf",
+34:       "*.otf",
+35:       "*.gif",
+36:       "*.ico",
+37:       "*.g.dart",
+38:       "*.freezed.dart",
+39:       "repomix-output.xml"
+40:     ]
+41:   }
+42: }
+</file>
+
+<file path="README.md">
+ 1: # 📱⚡ AutoSMS - Enterprise CRM & Automated SMS Dispatcher
+ 2: 
+ 3: **AutoSMS** هي منصة ذكية لإدارة علاقات العملاء (CRM) وأتمتة حملات الرسائل النصية القصيرة (SMS)، مبنية وفق المعمارية الفولاذية لنظم إدارة الموارد (ERP Architecture) بأسلوب **Offline-First**.
+ 4: 
+ 5: تتيح المنصة للشركات والأنشطة التجارية إدارة قواعد بيانات العملاء، تصنيفهم في مجموعات، وجدولة حملات إعلانية وتذكيرية تلقائية تُنفذ في الخلفية عبر هواتف أندرويد محددة بشكل شبحي (Ghost Execution)، مع المزامنة السحابية ثنائية الاتجاه وآليات أمان صارمة.
+ 6: 
+ 7: ---
+ 8: 
+ 9: ## 🌟 فكرة التطبيق والحل الذي يقدمه
+10: 
+11: في كثير من الأنشطة التجارية (المكاتب العقارية، العيادات، المدارس، شركات الأقساط)، يحتاج المسؤول لإرسال رسائل تذكيرية أو تسويقية دورية لآلاف العملاء. الحلول التقليدية إما مكلفة جداً (بوابات SMS سحابية) أو غير عملية (إرسال يدوي من الهاتف).
+12: 
+13: يقدم **AutoSMS** حلاً مبتكراً يدمج بين:
+14: 
+15: 1. **قوة الـ CRM في إدارة العملاء والحملات** من أي جهاز (كمبيوتر/هاتف).
+16: 2. **محرك الإرسال الشبح (Ghost Engine)** الذي يحول هواتف الشركة إلى "بوابات إرسال خاصة" تنفذ الحملات التلقائية في الدقيقة المحددة حتى لو كان التطبيق مغلقاً والهاتف في جيب المستخدم.
+17: 
+18: ---
+19: 
+20: ## 🔥 الميزات الرئيسية للنظام
+21: 
+22: ### 1. 👥 إدارة العملاء والجهات (CRM Engine)
+23: 
+24: * **استيراد سريع:** مزامنة واستيراد أسماء العملاء من جهات اتصال الهاتف بضغطة زر.
+25: * **تصنيف المجموعات:** تقسيم العملاء إلى مجموعات ديناميكية (مثل: عملاء VIP، متأخري السداد، شريحة أ).
+26: * **إدارة الحسابات:** تعديل البيانات، البحث السريع، والتصفية المتقدمة مع دعم الحذف الناعم (Soft Delete).
+27: 
+28: ### 2. 🚀 أتمتة الحملات والجدولة التلقائية
+29: 
+30: * **جدولة دقيقة:** تحديد يوم، ساعة، ودقيقة الإرسال للحملات المكررة شهرياً أو أسبوعياً.
+31: * **توجيه الأجهزة (Multi-Device Targeting):** ربط عدة هواتف بالحساب واختيار هاتف محدد لإرسال حملة معينة دون غيره.
+32: * **التحكم الحي:** تفعيل، إيقاف، أو تعديل شروط الحملات في أي وقت.
+33: 
+34: ### 3. 👻 محرك الإرسال الشبح (Ghost SMS Engine)
+35: 
+36: * **استيقاظ صامت (Silent FCM Push):** يتم إيقاظ الهاتف المستهدف عبر إشارة سحابية صامتة عند استحقاق موعد الحملة.
+37: * **إرسال الخلفية:** يتم إرسال الـ SMS آلياً عبر شريحة SIM الخاصة بالهاتف دون الحاجة لفتح التطبيق.
+38: * **إعادة المحاولة الذكية:** محاولة الإرسال حتى 3 مرات في حال فشل التغطية مع توثيق السبب.
+39: 
+40: ### 4. 🛡️ المعمارية الفولاذية والأمان (ERP-Grade Security)
+41: 
+42: * **نظام العمل بدون إنترنت (Offline-First):** الاعتماد الكامل على قاعدة بيانات محددة محلياً (`Drift/SQLite`) مع سرعة استجابة فائقة (Zero Latency).
+43: * **نبضة السحابة (Heartbeat & Anti-Tamper):** منع التلاعب بساعة الجهاز وتحديد حد أقصى للعمل بدون إنترنت (7 أيام).
+44: * **إدارة الترخيص واشتراك المكتب:** قفل التطبيق آلياً عند انتهاء رخصة الاستخدام.
+45: * **حماية الإجراءات الحساسة:** طلب رمز PIN سري مع فترة سماح مؤقتة (Grace Period) عند التعديل أو الحذف.
+46: 
+47: ### 5. ☁️ المزامنة الشاملة (Sync & Cloud)
+48: 
+49: * **معمارية عزل الشركات (Tenant Router):** قاعدة بيانات وسحابة مستقلة لكل عميل B2B لضمان أقصى درجات الخصوصية.
+50: * **دعم البيانات الضخمة (Pagination):** معالجة وسحب البيانات السحابية بسلاسة وتجاوز سقف الـ 1000 سجل.
+51: * **تتبع النشاطات:** سجل كامل لكافة الرسائل المرسلة والفاشلة والمستخدمين المنفذين.
+52: 
+53: ---
+54: 
+55: ## 🏗️ المعمارية البرمجية (Monorepo Architecture)
+56: 
+57: تم تقسيم المشروع إلى حزم مستقيمة وواضحة الأهداف وفق معايير **Very Good Analysis**:
+</file>
+
+</files>

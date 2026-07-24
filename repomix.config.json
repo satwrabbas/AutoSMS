@@ -1,0 +1,42 @@
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": true,
+    "showLineNumbers": true
+  },
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "android/**",
+      "ios/**",
+      "web/**",
+      "windows/**",
+      "macos/**",
+      "linux/**",
+      "assets/**",
+      "build/**",
+      ".dart_tool/**",
+      ".github/**",
+      ".vscode/**",
+      ".idea/**",
+      "pubspec.lock",
+      ".metadata",
+      "*.svg",
+      "*.png",
+      "*.jpg",
+      "*.jpeg",
+      "*.webp",
+      "*.ttf",
+      "*.otf",
+      "*.gif",
+      "*.ico",
+      "*.g.dart",
+      "*.freezed.dart",
+      "repomix-output.xml"
+    ]
+  }
+}
