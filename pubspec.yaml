@@ -28,7 +28,7 @@ dependencies:
   flutter_local_notifications: ^21.0.0
   firebase_core: ^4.5.0
   firebase_messaging: ^16.1.2
-  shared_preferences: ^2.5.4
+  shared_preferences: ^2.5.5
   android_id: ^0.5.1
   device_info_plus: ^12.3.0
   uuid: ^4.5.3
