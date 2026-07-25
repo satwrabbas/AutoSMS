@@ -26,7 +26,7 @@ dependencies:
   telephony: ^0.2.0
   flutter_background_service: ^5.1.0
   flutter_local_notifications: ^21.0.0
-  firebase_core: ^4.5.0
+  firebase_core: ^4.12.1
   firebase_messaging: ^16.1.2
   shared_preferences: ^2.5.4
   android_id: ^0.5.1
