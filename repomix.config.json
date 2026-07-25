@@ -2,7 +2,7 @@
   "$schema": "https://repomix.com/schemas/latest/schema.json",
   "output": {
     "filePath": "repomix-output.xml",
-    "style": "xml",
+    "style": "markdown",
     "removeComments": false,
     "removeEmptyLines": true,
     "showLineNumbers": true
@@ -14,15 +14,12 @@
       "android/**",
       "ios/**",
       "web/**",
-      "windows/**",
-      "macos/**",
-      "linux/**",
       "assets/**",
       "build/**",
       ".dart_tool/**",
       ".github/**",
       ".vscode/**",
-      ".idea/**",
+      ".run/**",
       "pubspec.lock",
       ".metadata",
       "*.svg",
@@ -31,12 +28,7 @@
       "*.jpeg",
       "*.webp",
       "*.ttf",
-      "*.otf",
-      "*.gif",
-      "*.ico",
-      "*.g.dart",
-      "*.freezed.dart",
-      "repomix-output.xml"
+      "*.otf"
     ]
   }
 }

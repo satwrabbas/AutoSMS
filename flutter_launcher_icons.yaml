@@ -1,0 +1,22 @@
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon.png"
+  
+  # هذا السطر هو الحل للسخط (Error) الذي ظهر لك
+  image_path_ios: "assets/images/icon.png"
+  
+  # إعدادات الأندرويد التكيفية
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/icon.png"
+
+  # التوافق مع Very Good CLI Flavors
+  # سنقوم بتحديد اسم الأيقونة لكل Flavor
+  web:
+    generate: true
+    image_path: "assets/images/icon.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFFFFF"
+
+
+    

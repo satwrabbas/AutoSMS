@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1065487711505",
+    "project_id": "auto-sms-crm",
+    "storage_bucket": "auto-sms-crm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065487711505:android:1ff8c28b0fd1a56b07e0b0",
+        "android_client_info": {
+          "package_name": "com.yourname.my_pro_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmGPNAbt-8BzdXgpR5GMAhw7xJW3WpkQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065487711505:android:17e33711d8d86d4907e0b0",
+        "android_client_info": {
+          "package_name": "com.yourname.my_pro_app.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmGPNAbt-8BzdXgpR5GMAhw7xJW3WpkQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
