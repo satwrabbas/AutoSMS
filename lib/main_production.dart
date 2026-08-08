@@ -14,7 +14,7 @@ import 'package:telephony/telephony.dart';
 import 'package:uuid/uuid.dart';
 
 // ==========================================
-// 👻 دالة الاستيقاظ الصامت (النسخة المدرعة 🛡️ + المزامنة السحابية ☁️)
+// BACKGROUND FCM MESSAGE HANDLER FOR SILENT DISPATCHING.
 // ==========================================
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -38,7 +38,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     waitCount++;
   }
 
-  print("👻 إشارة صامتة وصلت من السحابة!");
+  
 
   try {
     final data = message.data;
@@ -109,7 +109,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       print("⚠️ تعذر الرفع للسحابة، سيتم الرفع لاحقاً عند فتح التطبيق: $syncError");
     }
 
-    print("✅✅ تمت مهمة الشبح بالكامل بنجاح! العودة للنوم 💤");
+    
 
   } catch (e) {
     print("❌ حدث خطأ جذري في مهمة الخلفية: $e");

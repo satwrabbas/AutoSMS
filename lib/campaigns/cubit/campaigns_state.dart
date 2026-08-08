@@ -24,4 +24,3 @@ class CampaignsError extends CampaignsState {
 }
 
 
-// we fucked up

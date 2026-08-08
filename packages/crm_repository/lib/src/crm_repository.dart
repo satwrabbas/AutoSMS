@@ -33,7 +33,7 @@ class CrmRepository {
   }
 
   // ==========================================
-  // 🚪 دالة تسجيل الخروج (النسخة المدمرة للذاكرة 💥)
+  // HANDLES USER SIGN-OUT AND LOCAL CACHE CLEARANCE.
   // ==========================================
   Future<void> signOut() async {
     try {
@@ -45,7 +45,7 @@ class CrmRepository {
         await _cloudStorage.removeDevice(deviceId);
       }
       
-      // 🌟 2. السحر هنا: مسح كل الذاكرة المؤقتة (بما فيها وقت المزامنة القديم!)
+      // CLEAR PERSISTENT USER PREFERENCES. (بما فيها وقت المزامنة القديم!)
       // هذا يضمن أن تسجيل الدخول القادم سيبدأ بذاكرة نظيفة 100%
       await prefs.clear(); 
       
@@ -70,7 +70,7 @@ class CrmRepository {
     await _cloudStorage.removeDevice(deviceId);
   }
 
-  // 🌟 الدالة العبقرية الجديدة (تخزين مؤقت للأجهزة)
+  // FETCHES REGISTERED DEVICES WITH LOCAL CACHING.
   Future<List<Map<String, dynamic>>> getRegisteredDevices() async {
     final prefs = await SharedPreferences.getInstance();
     
