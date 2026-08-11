@@ -19,5 +19,60 @@
 
     "navHome": "الرئيسية",
     "navContacts": "العملاء",
-    "navCampaigns": "الحملات"
+    "navCampaigns": "الحملات",
+
+    "dashboardTitle": "لوحة التحكم (CRM)",
+    "statContacts": "العملاء",
+    "statGroups": "المجموعات",
+    "statSchedules": "الحملات",
+    "linkedDevicesTooltip": "الأجهزة المرتبطة",
+    "manualSyncTooltip": "المزامنة اليدوية",
+    "engineRunning": "الهاتف مسجل وجاهز للإرسال 📡",
+    "registerThisDevice": "تسجيل هذا الهاتف للبدء ☁️📱",
+    "recentLogsHeader": "سجل الإرسال الأخير:",
+    "noRecentLogs": "لم يتم إرسال أي رسائل أوتوماتيكية بعد.",
+    
+    "registerDeviceTitle": "تسجيل جهاز جديد 📱",
+    "deviceNameHint": "اسم الجهاز (مثال: هاتف المبيعات)",
+    "confirmAndLink": "تأكيد وربط",
+    "cancel": "إلغاء",
+
+    "linkedDevicesSheetTitle": "الأجهزة المرتبطة بالسحابة 📱☁️",
+    "noLinkedDevices": "لا توجد أي أجهزة مرتبطة بهذا الحساب حالياً.",
+    "unknownDevice": "جهاز غير معروف",
+    "thisDeviceConnected": "هذا الجهاز (متصل الآن)",
+    "connectedToCloud": "متصل بالسحابة",
+    "removeDeviceTooltip": "حذف هذا الجهاز",
+
+    "statusRegisteringDevice": "🔄 جاري تسجيل الجهاز...",
+    "statusUnlinkingDevice": "🛑 جاري فك الارتباط...",
+    "statusSmsPermissionRequired": "يجب الموافقة على صلاحية إرسال الـ SMS!",
+    "statusDeviceRegisteredSuccess": "📡 تم تسجيل الجهاز بنجاح!",
+    "statusDeviceUnlinkedSuccess": "🛑 تم فك ارتباط الهاتف بنجاح.",
+    "statusDeletingDevice": "🗑️ جاري حذف الجهاز...",
+    "statusDeviceDeletedSuccess": "✅ تم حذف الجهاز بنجاح!",
+    "statusSyncing": "🔄 جاري المزامنة الذكية...",
+    "statusSyncSuccessFull": "✅ تمت المزامنة بنجاح (تنزيل ورفع)!",
+    "statusSyncSuccessUpload": "✅ تم رفع بياناتك للسحابة بنجاح!",
+    
+    "statusLoadingFailed": "فشل تحميل البيانات: {error}",
+    "@statusLoadingFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusRegistrationFailed": "❌ فشل التسجيل: {error}",
+    "@statusRegistrationFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusUnlinkFailed": "❌ فشل فك الارتباط: {error}",
+    "@statusUnlinkFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusDeleteFailed": "❌ فشل الحذف: {error}",
+    "@statusDeleteFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusSyncFailed": "❌ فشلت المزامنة: {error}",
+    "@statusSyncFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    }
 }

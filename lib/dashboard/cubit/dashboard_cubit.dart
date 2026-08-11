@@ -17,22 +17,17 @@ class DashboardCubit extends Cubit<DashboardState> {
   final CrmRepository _repository;
   final Telephony telephony = Telephony.instance;
 
-  // ==========================================
-  // 1. تحميل الإحصائيات والأجهزة
-  // ==========================================
   Future<void> loadDashboard() async {
     try {
       final contacts = await _repository.getContacts();
       final groups = await _repository.getGroups();
       final schedules = await _repository.getSchedules();
       final logs = await _repository.getMessageLogs();
-
       final prefs = await SharedPreferences.getInstance();
       final isRunning = prefs.getBool('is_engine_running') ?? false;
       final currentDeviceId = prefs.getString('registered_device_id');
 
-      // 🌟 جلب قائمة الأجهزة المرتبطة
-      List<Map<String, dynamic>> devices =[];
+      List<Map<String, dynamic>> devices = [];
       try {
         devices = await _repository.getRegisteredDevices();
       } catch (_) {}
@@ -43,68 +38,60 @@ class DashboardCubit extends Cubit<DashboardState> {
         schedulesCount: schedules.length,
         recentLogs: logs,
         isEngineRunning: isRunning,
-        registeredDevices: devices, // 🌟 تمرير الأجهزة
-        currentDeviceId: currentDeviceId, // 🌟 تمرير هوية هذا الجهاز
+        registeredDevices: devices,
+        currentDeviceId: currentDeviceId,
       ));
     } catch (e) {
       if (state is DashboardLoaded) {
-        emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'فشل تحميل البيانات: $e'));
+        emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusLoadingFailed:$e'));
       } else {
-        // حالة نادرة جداً: فشل التحميل من أول مرة
         emit(DashboardLoaded(
-          contactsCount: 0, groupsCount: 0, schedulesCount: 0, 
-          recentLogs: [], registeredDevices: [], engineStatusMessage: 'فشل التحميل: $e'
+          contactsCount: 0,
+          groupsCount: 0,
+          schedulesCount: 0,
+          recentLogs: [],
+          registeredDevices: [],
+          engineStatusMessage: 'statusLoadingFailed:$e',
         ));
       }
     }
   }
 
-  // ==========================================
-  // 2. تسجيل/فك ارتباط هذا الجهاز
-  // ==========================================
   Future<void> toggleEngine({String? deviceName}) async {
     if (state is DashboardLoaded) {
       final currentState = state as DashboardLoaded;
       final isRunning = !currentState.isEngineRunning;
-
       emit(currentState.copyWith(
-        engineStatusMessage: isRunning ? '🔄 جاري تسجيل الجهاز...' : '🛑 جاري فك الارتباط...',
+        engineStatusMessage: isRunning ? 'statusRegisteringDevice' : 'statusUnlinkingDevice',
         clearMessage: true,
       ));
-
       final prefs = await SharedPreferences.getInstance();
-
       if (isRunning && deviceName != null) {
         try {
           if (Platform.isAndroid) {
             final smsGranted = await telephony.requestPhoneAndSmsPermissions;
-            if (smsGranted == null || !smsGranted) throw 'يجب الموافقة على صلاحية إرسال الـ SMS!';
+            if (smsGranted == null || !smsGranted) throw 'statusSmsPermissionRequired';
           }
-
           FirebaseMessaging messaging = FirebaseMessaging.instance;
           await messaging.requestPermission(alert: false, badge: false, sound: false, provisional: false);
-
           final fcmToken = await messaging.getToken();
           final String hardwareId = await const AndroidId().getId() ?? 'unknown_${DateTime.now().millisecondsSinceEpoch}';
-
           if (fcmToken != null) {
             final newDeviceId = await _repository.registerDevice(deviceName, fcmToken, hardwareId);
             if (newDeviceId != null) {
               await prefs.setString('registered_device_id', newDeviceId);
             }
           }
-
           await prefs.setBool('is_engine_running', true);
           await loadDashboard(); 
-
           if (state is DashboardLoaded) {
-             emit((state as DashboardLoaded).copyWith(engineStatusMessage: '📡 تم تسجيل الجهاز بنجاح!'));
+             emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusDeviceRegisteredSuccess'));
           }
-
         } catch (e) {
           await prefs.setBool('is_engine_running', false);
           if (state is DashboardLoaded) {
-             emit((state as DashboardLoaded).copyWith(engineStatusMessage: '❌ فشل التسجيل: $e', isEngineRunning: false));
+             final errStr = e.toString().startsWith('status') ? e.toString() : 'statusRegistrationFailed:$e';
+             emit((state as DashboardLoaded).copyWith(engineStatusMessage: errStr, isEngineRunning: false));
           }
         }
       } else {
@@ -116,68 +103,54 @@ class DashboardCubit extends Cubit<DashboardState> {
           }
           await prefs.setBool('is_engine_running', false);
           await loadDashboard(); 
-
           if (state is DashboardLoaded) {
-             emit((state as DashboardLoaded).copyWith(engineStatusMessage: '🛑 تم فك ارتباط الهاتف بنجاح.', isEngineRunning: false));
+             emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusDeviceUnlinkedSuccess', isEngineRunning: false));
           }
         } catch (e) {
           if (state is DashboardLoaded) {
-             emit((state as DashboardLoaded).copyWith(engineStatusMessage: '❌ فشل فك الارتباط: $e', isEngineRunning: true));
+             emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusUnlinkFailed:$e', isEngineRunning: true));
           }
         }
       }
     }
   }
 
-  // ==========================================
-  // 3. 🗑️ دالة حذف الأجهزة الشبحية (الأجهزة الأخرى)
-  // ==========================================
   Future<void> removeLinkedDevice(String deviceId) async {
     if (state is DashboardLoaded) {
       final currentState = state as DashboardLoaded;
-      emit(currentState.copyWith(engineStatusMessage: '🗑️ جاري حذف الجهاز...', clearMessage: true));
-
+      emit(currentState.copyWith(engineStatusMessage: 'statusDeletingDevice', clearMessage: true));
       try {
-        await _repository.removeDevice(deviceId); // مسح من السحابة
-        await loadDashboard(); // 🌟 إعادة تحميل القائمة
-        
+        await _repository.removeDevice(deviceId);
+        await loadDashboard();
         if (state is DashboardLoaded) {
-          emit((state as DashboardLoaded).copyWith(engineStatusMessage: '✅ تم حذف الجهاز بنجاح!'));
+          emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusDeviceDeletedSuccess'));
         }
       } catch (e) {
         if (state is DashboardLoaded) {
-          emit((state as DashboardLoaded).copyWith(engineStatusMessage: '❌ فشل الحذف: $e'));
+          emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusDeleteFailed:$e'));
         }
       }
     }
   }
 
-  // ==========================================
-  // 4. المزامنة الذكية
-  // ==========================================
   Future<void> syncDataToCloud() async {
-  if (state is DashboardLoaded) {
-    final currentState = state as DashboardLoaded;
-    emit(currentState.copyWith(engineStatusMessage: '🔄 جاري المزامنة الذكية...', clearMessage: true));
-
-  try {
+    if (state is DashboardLoaded) {
+      final currentState = state as DashboardLoaded;
+      emit(currentState.copyWith(engineStatusMessage: 'statusSyncing', clearMessage: true));
+      try {
         final wasDownloaded = await _repository.downloadIfCloudIsNewer();
-        
-        // 🌟 الرفع الدائم لضمان عدم ضياع سجلات الشبح
         await _repository.syncAllToCloud();
-        
         await loadDashboard(); 
-        
         if (state is DashboardLoaded) {
           emit((state as DashboardLoaded).copyWith(engineStatusMessage: 
-            wasDownloaded ? '✅ تمت المزامنة بنجاح (تنزيل ورفع)!' : '✅ تم رفع بياناتك للسحابة بنجاح!'
+            wasDownloaded ? 'statusSyncSuccessFull' : 'statusSyncSuccessUpload'
           ));
         }
       } catch (e) {
-      if (state is DashboardLoaded) {
-        emit((state as DashboardLoaded).copyWith(engineStatusMessage: '❌ فشلت المزامنة: $e'));
+        if (state is DashboardLoaded) {
+          emit((state as DashboardLoaded).copyWith(engineStatusMessage: 'statusSyncFailed:$e'));
+        }
       }
     }
-  }
   }
 }

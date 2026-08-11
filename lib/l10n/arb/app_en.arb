@@ -13,12 +13,66 @@
     "errorNoInternet": "❌ No internet connection! Please check your network and try again.",
     "errorInvalidCredentials": "Invalid email or password ❌",
     "errorUserAlreadyRegistered": "This email is already registered! 📧",
-    "errorWeakPassword": "This email is already registered! 📧",
     "errorWeakPassword": "Password is weak, it must be at least 6 characters 🔐",
     "errorRateLimit": "Too many attempts. Please wait a moment ⏳",
     "errorUnexpected": "An unexpected error occurred. Please try again later.",
 
     "navHome": "Home",
     "navContacts": "Contacts",
-    "navCampaigns": "Campaigns"
+    "navCampaigns": "Campaigns",
+
+    "dashboardTitle": "CRM Dashboard",
+    "statContacts": "Contacts",
+    "statGroups": "Groups",
+    "statSchedules": "Campaigns",
+    "linkedDevicesTooltip": "Linked Devices",
+    "manualSyncTooltip": "Manual Sync",
+    "engineRunning": "Phone registered and ready to send 📡",
+    "registerThisDevice": "Register this phone to start ☁️📱",
+    "recentLogsHeader": "Recent Send Logs:",
+    "noRecentLogs": "No automated messages sent yet.",
+
+    "registerDeviceTitle": "Register New Device 📱",
+    "deviceNameHint": "Device name (e.g. Sales Phone)",
+    "confirmAndLink": "Confirm & Link",
+    "cancel": "Cancel",
+
+    "linkedDevicesSheetTitle": "Cloud Linked Devices 📱☁️",
+    "noLinkedDevices": "No devices currently linked to this account.",
+    "unknownDevice": "Unknown Device",
+    "thisDeviceConnected": "This Device (Connected Now)",
+    "connectedToCloud": "Connected to Cloud",
+    "removeDeviceTooltip": "Remove this device",
+
+    "statusRegisteringDevice": "🔄 Registering device...",
+    "statusUnlinkingDevice": "🛑 Unlinking device...",
+    "statusSmsPermissionRequired": "SMS sending permission is required!",
+    "statusDeviceRegisteredSuccess": "📡 Device registered successfully!",
+    "statusDeviceUnlinkedSuccess": "🛑 Phone unlinked successfully.",
+    "statusDeletingDevice": "🗑️ Deleting device...",
+    "statusDeviceDeletedSuccess": "✅ Device deleted successfully!",
+    "statusSyncing": "🔄 Smart syncing...",
+    "statusSyncSuccessFull": "✅ Sync succeeded (download & upload)!",
+    "statusSyncSuccessUpload": "✅ Data uploaded to cloud successfully!",
+
+    "statusLoadingFailed": "Failed to load data: {error}",
+    "@statusLoadingFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusRegistrationFailed": "❌ Registration failed: {error}",
+    "@statusRegistrationFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusUnlinkFailed": "❌ Unlinking failed: {error}",
+    "@statusUnlinkFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusDeleteFailed": "❌ Deleting failed: {error}",
+    "@statusDeleteFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    },
+    "statusSyncFailed": "❌ Sync failed: {error}",
+    "@statusSyncFailed": {
+        "placeholders": { "error": { "type": "String" } }
+    }
 }
