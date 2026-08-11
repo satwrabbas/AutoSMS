@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_sms/campaigns/view/campaigns_page.dart';
-// استدعاء شاشة جهات الاتصال التي صنعناها
 import 'package:auto_sms/contacts/view/contacts_page.dart';
 import 'package:auto_sms/dashboard/view/dashboard_page.dart';
 import 'package:auto_sms/home/cubit/home_cubit.dart';
+import 'package:auto_sms/l10n/l10n.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,46 +23,36 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // رقم الصفحة المحددة حالياً
+    final l10n = context.l10n;
     final selectedTab = context.watch<HomeCubit>().state;
-
-    // قائمة الشاشات (سنضيف الشاشات الأخرى لاحقاً)
-    final pages =<Widget>[
-   // 1. لوحة التحكم (🌟 تم استبدالها)
-   const DashboardPage(),
-   
-   // 2. شاشة جهات الاتصال
-   const ContactsPage(),
-   
-   // 3. شاشة الحملات
-   const CampaignsPage(),
-  ];
+    final pages = const <Widget>[
+      DashboardPage(),
+      ContactsPage(),
+      CampaignsPage(),
+    ];
 
     return Scaffold(
-      // نعرض الشاشة بناءً على الرقم المختار
       body: pages[selectedTab],
-      
-      // شريط التنقل السفلي
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedTab,
         onDestinationSelected: (index) {
-          context.read<HomeCubit>().setTab(index); // تغيير الصفحة
+          context.read<HomeCubit>().setTab(index);
         },
-        destinations: const[
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'الرئيسية',
+            icon: const Icon(Icons.dashboard_outlined),
+            selectedIcon: const Icon(Icons.dashboard),
+            label: l10n.navHome,
           ),
           NavigationDestination(
-            icon: Icon(Icons.people_outline),
-            selectedIcon: Icon(Icons.people),
-            label: 'العملاء',
+            icon: const Icon(Icons.people_outline),
+            selectedIcon: const Icon(Icons.people),
+            label: l10n.navContacts,
           ),
           NavigationDestination(
-            icon: Icon(Icons.rocket_launch_outlined),
-            selectedIcon: Icon(Icons.rocket_launch),
-            label: 'الحملات',
+            icon: const Icon(Icons.rocket_launch_outlined),
+            selectedIcon: const Icon(Icons.rocket_launch),
+            label: l10n.navCampaigns,
           ),
         ],
       ),

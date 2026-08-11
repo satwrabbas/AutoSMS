@@ -15,5 +15,9 @@
     "errorUserAlreadyRegistered": "هذا البريد الإلكتروني مسجل مسبقاً لدينا! 📧",
     "errorWeakPassword": "كلمة المرور ضعيفة، يجب أن تكون 6 أحرف على الأقل 🔐",
     "errorRateLimit": "حاولت الكثير من المرات. يرجى الانتظار قليلاً ⏳",
-    "errorUnexpected": "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً."
+    "errorUnexpected": "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً.",
+
+    "navHome": "الرئيسية",
+    "navContacts": "العملاء",
+    "navCampaigns": "الحملات"
 }

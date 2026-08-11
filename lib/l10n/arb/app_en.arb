@@ -13,7 +13,12 @@
     "errorNoInternet": "❌ No internet connection! Please check your network and try again.",
     "errorInvalidCredentials": "Invalid email or password ❌",
     "errorUserAlreadyRegistered": "This email is already registered! 📧",
+    "errorWeakPassword": "This email is already registered! 📧",
     "errorWeakPassword": "Password is weak, it must be at least 6 characters 🔐",
     "errorRateLimit": "Too many attempts. Please wait a moment ⏳",
-    "errorUnexpected": "An unexpected error occurred. Please try again later."
+    "errorUnexpected": "An unexpected error occurred. Please try again later.",
+
+    "navHome": "Home",
+    "navContacts": "Contacts",
+    "navCampaigns": "Campaigns"
 }
