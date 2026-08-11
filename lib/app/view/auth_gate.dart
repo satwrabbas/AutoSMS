@@ -3,6 +3,7 @@ import 'package:crm_repository/crm_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_sms/home/view/home_page.dart';
+import 'package:auto_sms/l10n/l10n.dart';
 import 'package:auto_sms/login/view/login_page.dart';
 
 class AuthGate extends StatelessWidget {
@@ -11,18 +12,14 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repository = context.read<CrmRepository>();
-
     return StreamBuilder<AuthState>(
       stream: repository.authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-
         final session = snapshot.hasData ? snapshot.data!.session : null;
-
         if (session != null) {
-          // 🌟 نستخدم الشاشة الذكية الجديدة هنا لمنع التكرار
           return const WorkspaceInitializer();
         } else {
           return const LoginPage();
@@ -32,9 +29,6 @@ class AuthGate extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 🌟 الشاشة الذكية للتهيئة (تعمل مرة واحدة فقط!)
-// ==========================================
 class WorkspaceInitializer extends StatefulWidget {
   const WorkspaceInitializer({super.key});
 
@@ -48,49 +42,48 @@ class _WorkspaceInitializerState extends State<WorkspaceInitializer> {
   @override
   void initState() {
     super.initState();
-    // 🌟 نستدعي دالة الشفاء الذاتي عند فتح التطبيق
     _initFuture = _initializeWorkspace();
   }
 
-  // ==========================================
-  // 🌟 دالة الشفاء الذاتي الذكية
-  // ==========================================
   Future<void> _initializeWorkspace() async {
     final repository = context.read<CrmRepository>();
     try {
-      // 1. تنزيل التحديثات السحابية أولاً إن وجدت
       await repository.downloadIfCloudIsNewer();
-      
-      // 2. 🌟 الرفع الدائم! (لضمان رفع أي رسائل أرسلها الشبح في الخلفية)
       await repository.syncAllToCloud();
     } catch (e) {
-      print("⚠️ تعذرت المزامنة المبدئية: $e");
+      print("⚠️ Initial sync failed: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return FutureBuilder(
       future: _initFuture,
       builder: (context, snapshot) {
-        
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:[
-                  CircularProgressIndicator(color: Colors.teal),
-                  SizedBox(height: 24),
-                  Text('جاري تهيئة مساحة العمل...', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
-                  Text('يتم الآن مزامنة بياناتك بأمان ☁️', style: TextStyle(color: Colors.grey)),
+                children: [
+                  const CircularProgressIndicator(color: Colors.teal),
+                  const SizedBox(height: 24),
+                  Text(
+                    l10n.initializingWorkspace,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.syncingDataSafely,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
             ),
           );
         }
-        
         return const HomePage();
       },
     );
