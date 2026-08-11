@@ -1,5 +1,19 @@
 {
     "@@locale": "en",
     "initializingWorkspace": "Initializing workspace...",
-    "syncingDataSafely": "Syncing your data securely ☁️"
+    "syncingDataSafely": "Syncing your data securely ☁️",
+
+    "loginTitle": "CRM Login",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "signInButton": "Sign In",
+    "signUpButton": "Create New Account",
+    "loginSuccessMessage": "Successfully logged in!",
+
+    "errorNoInternet": "❌ No internet connection! Please check your network and try again.",
+    "errorInvalidCredentials": "Invalid email or password ❌",
+    "errorUserAlreadyRegistered": "This email is already registered! 📧",
+    "errorWeakPassword": "Password is weak, it must be at least 6 characters 🔐",
+    "errorRateLimit": "Too many attempts. Please wait a moment ⏳",
+    "errorUnexpected": "An unexpected error occurred. Please try again later."
 }

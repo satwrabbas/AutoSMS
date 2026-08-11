@@ -1,5 +1,19 @@
 {
     "@@locale": "ar",
     "initializingWorkspace": "جاري تهيئة مساحة العمل...",
-    "syncingDataSafely": "يتم الآن مزامنة بياناتك بأمان ☁️"
+    "syncingDataSafely": "يتم الآن مزامنة بياناتك بأمان ☁️",
+
+    "loginTitle": "تسجيل الدخول (CRM)",
+    "emailLabel": "البريد الإلكتروني",
+    "passwordLabel": "كلمة المرور",
+    "signInButton": "تسجيل الدخول",
+    "signUpButton": "إنشاء حساب جديد",
+    "loginSuccessMessage": "تم الدخول بنجاح!",
+
+    "errorNoInternet": "❌ لا يوجد اتصال بالإنترنت! يرجى التحقق من الشبكة والمحاولة مجدداً.",
+    "errorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة ❌",
+    "errorUserAlreadyRegistered": "هذا البريد الإلكتروني مسجل مسبقاً لدينا! 📧",
+    "errorWeakPassword": "كلمة المرور ضعيفة، يجب أن تكون 6 أحرف على الأقل 🔐",
+    "errorRateLimit": "حاولت الكثير من المرات. يرجى الانتظار قليلاً ⏳",
+    "errorUnexpected": "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً."
 }

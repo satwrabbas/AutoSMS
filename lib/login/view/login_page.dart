@@ -1,6 +1,7 @@
 import 'package:crm_repository/crm_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_sms/l10n/l10n.dart';
 import 'package:auto_sms/login/cubit/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {
@@ -33,53 +34,78 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  String _getLocalizedError(BuildContext context, String rawError) {
+    final l10n = context.l10n;
+    switch (rawError) {
+      case 'errorNoInternet':
+        return l10n.errorNoInternet;
+      case 'errorInvalidCredentials':
+        return l10n.errorInvalidCredentials;
+      case 'errorUserAlreadyRegistered':
+        return l10n.errorUserAlreadyRegistered;
+      case 'errorWeakPassword':
+        return l10n.errorWeakPassword;
+      case 'errorRateLimit':
+        return l10n.errorRateLimit;
+      case 'errorUnexpected':
+        return l10n.errorUnexpected;
+      default:
+        return rawError;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('تسجيل الدخول (CRM)')),
-      // 🌟 السحر هنا: BlocConsumer يستمع للحالات ليعرض رسائل (SnackBar) ويبني الشاشة (Builder)
+      appBar: AppBar(title: Text(l10n.loginTitle)),
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+              SnackBar(
+                content: Text(_getLocalizedError(context, state.message)),
+                backgroundColor: Colors.red,
+              ),
             );
           } else if (state is LoginSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('تم الدخول بنجاح!'), backgroundColor: Colors.green),
+              SnackBar(
+                content: Text(l10n.loginSuccessMessage),
+                backgroundColor: Colors.green,
+              ),
             );
-            // ملاحظة: لن نكتب هنا Navigator لأن الـ AuthGate سيتولى نقلنا تلقائياً!
           }
         },
         builder: (context, state) {
           final isLoading = state is LoginLoading;
-
           return Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children:[
+                children: [
                   const Icon(Icons.lock_person, size: 100, color: Colors.blue),
                   const SizedBox(height: 30),
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'البريد الإلكتروني',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
+                    decoration: InputDecoration(
+                      labelText: l10n.emailLabel,
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.email),
                     ),
                   ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'كلمة المرور',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.lock),
+                    decoration: InputDecoration(
+                      labelText: l10n.passwordLabel,
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.lock),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -94,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                             );
                       },
                       style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
-                      child: const Text('تسجيل الدخول', style: TextStyle(fontSize: 18)),
+                      child: Text(l10n.signInButton, style: const TextStyle(fontSize: 18)),
                     ),
                     const SizedBox(height: 12),
                     TextButton(
@@ -104,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                               password: _passwordController.text.trim(),
                             );
                       },
-                      child: const Text('إنشاء حساب جديد'),
+                      child: Text(l10n.signUpButton),
                     ),
                   ],
                 ],
