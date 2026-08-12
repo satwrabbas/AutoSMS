@@ -87,7 +87,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
         final String hardwareId = await androidIdPlugin.getId() ?? 
             'unknown_device_${DateTime.now().millisecondsSinceEpoch}';
 
-        String deviceRealName = 'Sending Phone';
+        String deviceRealName = 'Mobile Device';
         try {
           if (Platform.isAndroid) {
             final deviceInfo = DeviceInfoPlugin();

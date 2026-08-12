@@ -167,4 +167,5 @@
     "@errEditSchedule": { "placeholders": { "error": { "type": "String" } } },
     "errToggleScheduleActive": "خطأ أثناء تبديل حالة الحملة: {error}",
     "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } }
+    "unnamedContact": "بدون اسم",
 }

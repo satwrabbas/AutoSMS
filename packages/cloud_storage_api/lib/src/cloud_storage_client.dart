@@ -66,8 +66,9 @@ class CloudStorageClient {
         final response = await _supabaseClient.from('user_tokens').insert(data).select().single();
         return response['device_id'] as String;
       }
+    
     } catch (e) {
-      throw 'حدث خطأ في تسجيل الجهاز: $e';
+      throw Exception('Failed to register device: $e');
     }
   }
 

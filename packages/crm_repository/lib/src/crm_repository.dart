@@ -120,11 +120,9 @@ class CrmRepository {
     final existingContacts = await _localStorage.getAllContacts();
 
     for (var contact in phoneContacts) {
-      // تنظيف رقم الهاتف 
       final phone = (contact['phone'] ?? '').replaceAll(RegExp(r'\s+|-'), '');
-      final name = contact['name'] ?? 'بدون اسم';
-
-      if (phone.isEmpty) continue; 
+      final name = (contact['name'] ?? '').trim();
+      if (phone.isEmpty) continue;
 
       // 2. البحث عما إذا كان هذا الرقم موجوداً مسبقاً
       // (استخدام firstWhere مع orElse لتعمل بأمان على كل نسخ Dart)

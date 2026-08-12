@@ -75,13 +75,17 @@ class _ContactsViewState extends State<ContactsView> {
     final cubit = context.read<ContactsCubit>();
     final isBulk = singleContact == null;
 
+    final displayName = (singleContact != null && singleContact.name.isNotEmpty)
+        ? singleContact.name
+        : l10n.unnamedContact;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
           isBulk 
               ? l10n.assignGroupBulkTitle(_selectedContacts.length) 
-              : l10n.assignGroupSingleTitle(singleContact.name),
+              : l10n.assignGroupSingleTitle(displayName),
         ),
         content: SizedBox(
           width: double.maxFinite,
@@ -152,7 +156,7 @@ class _ContactsViewState extends State<ContactsView> {
             TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
             ElevatedButton(
               onPressed: () {
-                if (nameController.text.isNotEmpty && phoneController.text.isNotEmpty) {
+                if (phoneController.text.trim().isNotEmpty) {
                   if (isEditing) {
                     cubit.editContact(contact, nameController.text.trim(), phoneController.text.trim());
                   } else {
@@ -171,6 +175,7 @@ class _ContactsViewState extends State<ContactsView> {
 
   void _showContactOptions(BuildContext context, Contact contact, List<Group> groups) {
     final l10n = context.l10n;
+    final displayName = contact.name.isNotEmpty ? contact.name : l10n.unnamedContact;
 
     showModalBottomSheet(
       context: context,
@@ -180,7 +185,7 @@ class _ContactsViewState extends State<ContactsView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Text(contact.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(displayName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             Text(contact.phone, style: const TextStyle(color: Colors.grey, fontSize: 16)),
             const SizedBox(height: 16),
             Row(
@@ -427,6 +432,7 @@ class _ContactsViewState extends State<ContactsView> {
                     itemBuilder: (context, index) {
                       final contact = filteredContacts[index];
                       final isSelected = _selectedContacts.contains(contact);
+                      final displayName = contact.name.isNotEmpty ? contact.name : l10n.unnamedContact;
                       String groupName = l10n.noGroup;
                       Color groupColor = Colors.grey;
                       if (contact.groupId != null) {
@@ -445,7 +451,7 @@ class _ContactsViewState extends State<ContactsView> {
                                 onChanged: (_) => setState(() => isSelected ? _selectedContacts.remove(contact) : _selectedContacts.add(contact)),
                               )
                             : const CircleAvatar(child: Icon(Icons.person)),
-                        title: Text(contact.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        title: Text(displayName, style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(contact.phone),
                         trailing: Chip(label: Text(groupName, style: const TextStyle(fontSize: 10, color: Colors.white)), backgroundColor: groupColor),
                         onLongPress: () => setState(() => _selectedContacts.add(contact)),

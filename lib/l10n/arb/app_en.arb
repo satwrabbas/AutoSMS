@@ -167,4 +167,5 @@
     "@errEditSchedule": { "placeholders": { "error": { "type": "String" } } },
     "errToggleScheduleActive": "Error toggling campaign status: {error}",
     "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } }
+    "unnamedContact": "Unnamed Contact",
 }

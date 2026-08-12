@@ -97,10 +97,14 @@ class ContactsCubit extends Cubit<ContactsState> {
           properties: {phone_contacts.ContactProperty.name, phone_contacts.ContactProperty.phone},
         );
         final List<Map<String, String>> formattedContacts = [];
+        // lib/contacts/cubit/contacts_cubit.dart (Line 93)
+
         for (var c in contactsFromPhone) {
           if (c.phones.isNotEmpty) {
             formattedContacts.add({
-              'name': c.displayName ?? 'بدون اسم',
+              'name': (c.displayName != null && c.displayName!.trim().isNotEmpty)
+                  ? c.displayName!.trim()
+                  : '',
               'phone': c.phones.first.number,
             });
           }
