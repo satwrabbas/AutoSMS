@@ -56,25 +56,15 @@
     "statusSyncSuccessUpload": "✅ تم رفع بياناتك للسحابة بنجاح!",
     
     "statusLoadingFailed": "فشل تحميل البيانات: {error}",
-    "@statusLoadingFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusLoadingFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusRegistrationFailed": "❌ فشل التسجيل: {error}",
-    "@statusRegistrationFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusRegistrationFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusUnlinkFailed": "❌ فشل فك الارتباط: {error}",
-    "@statusUnlinkFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusUnlinkFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusDeleteFailed": "❌ فشل الحذف: {error}",
-    "@statusDeleteFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusDeleteFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusSyncFailed": "❌ فشلت المزامنة: {error}",
-    "@statusSyncFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusSyncFailed": { "placeholders": { "error": { "type": "String" } } },
 
     "contactsTitle": "العملاء (CRM)",
     "syncContactsTooltip": "مزامنة الأسماء من الهاتف",
@@ -120,5 +110,61 @@
     "errEditContact": "خطأ في التعديل: {error}",
     "@errEditContact": { "placeholders": { "error": { "type": "String" } } },
     "errSyncContacts": "حدث خطأ أثناء المزامنة: {error}",
-    "@errSyncContacts": { "placeholders": { "error": { "type": "String" } } }
+    "@errSyncContacts": { "placeholders": { "error": { "type": "String" } } },
+
+    "campaignsAndGroupsTitle": "الحملات والمجموعات",
+    "logoutTooltip": "تسجيل خروج",
+    "tabGroups": "المجموعات",
+    "logoutTitle": "تسجيل الخروج",
+    "logoutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
+    "logoutButton": "خروج",
+    "noGroupsYet": "لا توجد مجموعات بعد. قم بإنشاء مجموعة 📁",
+    "newGroup": "مجموعة جديدة",
+    "editGroupTitle": "تعديل المجموعة",
+    "newGroupTitle": "مجموعة جديدة",
+    "groupNameLabel": "اسم المجموعة",
+    "groupNameHint": "مثال: عملاء VIP",
+    "pleaseEnterGroupName": "يرجى إدخال اسم للمجموعة",
+    "delete": "حذف",
+    "save": "حفظ",
+
+    "mustCreateGroupFirst": "يجب إنشاء مجموعة أولاً! 📁",
+    "mustLinkDeviceFirst": "يجب ربط هاتف واحد على الأقل من (لوحة التحكم) قبل إنشاء حملة! 📱",
+    "noCampaignsYet": "لا توجد حملات أتمتة بعد. قم بإنشاء حملة 🚀",
+    "groupLabel": "مجموعة: {name}",
+    "@groupLabel": { "placeholders": { "name": { "type": "String" } } },
+    "deletedGroup": "مجموعة محذوفة",
+    "unspecifiedDevice": "جهاز غير محدد",
+    "scheduleTimeFormat": "يوم {day} - الساعة {time}",
+    "@scheduleTimeFormat": { "placeholders": { "day": { "type": "int" }, "time": { "type": "String" } } },
+    "newCampaign": "حملة جديدة",
+    "editCampaignTitle": "تعديل الحملة 🚀",
+    "newCampaignTitle": "حملة أتمتة جديدة 🚀",
+    "selectGroupLabel": "اختر المجموعة",
+    "sendingPhoneLabel": "الهاتف المرسل 📱",
+    "pleaseSelectDevice": "يرجى اختيار هاتف للإرسال",
+    "smsMessageLabel": "نص الرسالة (SMS)",
+    "pleaseEnterMessage": "يرجى كتابة نص الرسالة",
+    "sendDayLabel": "يوم الإرسال (1 - 31)",
+    "pleaseSpecifyDay": "يرجى تحديد اليوم",
+    "enterValidDayNumber": "أدخل رقماً صحيحاً بين 1 و 31",
+    "sendingTimeFormat": "وقت الإرسال: {time}",
+    "@sendingTimeFormat": { "placeholders": { "time": { "type": "String" } } },
+
+    "errCreateGroup": "خطأ في إنشاء المجموعة: {error}",
+    "@errCreateGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errDeleteGroup": "خطأ أثناء الحذف: {error}",
+    "@errDeleteGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errEditGroup": "خطأ أثناء التعديل: {error}",
+    "@errEditGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errLoadCampaignsData": "حدث خطأ في جلب البيانات المحلية: {error}",
+    "@errLoadCampaignsData": { "placeholders": { "error": { "type": "String" } } },
+    "errCreateSchedule": "خطأ في إنشاء الحملة: {error}",
+    "@errCreateSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errDeleteSchedule": "خطأ أثناء حذف الحملة: {error}",
+    "@errDeleteSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errEditSchedule": "خطأ أثناء تعديل الحملة: {error}",
+    "@errEditSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errToggleScheduleActive": "خطأ أثناء تبديل حالة الحملة: {error}",
+    "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } }
 }

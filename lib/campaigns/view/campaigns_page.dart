@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_repository/crm_repository.dart';
 import 'package:local_storage_api/local_storage_api.dart';
+import 'package:auto_sms/l10n/l10n.dart';
 import '../cubit/campaigns_cubit.dart';
 
-// ==========================================
-// الصفحة الرئيسية للحملات
-// ==========================================
 class CampaignsPage extends StatelessWidget {
   const CampaignsPage({super.key});
 
@@ -24,65 +22,92 @@ class CampaignsPage extends StatelessWidget {
 class CampaignsView extends StatelessWidget {
   const CampaignsView({super.key});
 
-  
-  // 🌟 دالة إظهار رسالة تأكيد تسجيل الخروج
+  String _getLocalizedCampaignError(BuildContext context, String rawError) {
+    final l10n = context.l10n;
+    if (rawError.startsWith('errLoadCampaignsData:')) {
+      return l10n.errLoadCampaignsData(rawError.substring('errLoadCampaignsData:'.length));
+    }
+    if (rawError.startsWith('errCreateGroup:')) {
+      return l10n.errCreateGroup(rawError.substring('errCreateGroup:'.length));
+    }
+    if (rawError.startsWith('errCreateSchedule:')) {
+      return l10n.errCreateSchedule(rawError.substring('errCreateSchedule:'.length));
+    }
+    if (rawError.startsWith('errDeleteGroup:')) {
+      return l10n.errDeleteGroup(rawError.substring('errDeleteGroup:'.length));
+    }
+    if (rawError.startsWith('errEditGroup:')) {
+      return l10n.errEditGroup(rawError.substring('errEditGroup:'.length));
+    }
+    if (rawError.startsWith('errDeleteSchedule:')) {
+      return l10n.errDeleteSchedule(rawError.substring('errDeleteSchedule:'.length));
+    }
+    if (rawError.startsWith('errEditSchedule:')) {
+      return l10n.errEditSchedule(rawError.substring('errEditSchedule:'.length));
+    }
+    if (rawError.startsWith('errToggleScheduleActive:')) {
+      return l10n.errToggleScheduleActive(rawError.substring('errToggleScheduleActive:'.length));
+    }
+    return rawError;
+  }
+
   void _showLogoutConfirmation(BuildContext context) {
+    final l10n = context.l10n;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
-          children:[
-            Icon(Icons.logout, color: Colors.red),
-            SizedBox(width: 8),
-            Text('تسجيل الخروج'),
+        title: Row(
+          children: [
+            const Icon(Icons.logout, color: Colors.red),
+            const SizedBox(width: 8),
+            Text(l10n.logoutTitle),
           ],
         ),
-        content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟', style: TextStyle(fontSize: 16)),
-        actions:[
+        content: Text(l10n.logoutConfirmation, style: const TextStyle(fontSize: 16)),
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext), // إغلاق النافذة فقط
-            child: const Text('إلغاء', style: TextStyle(color: Colors.grey)),
+            onPressed: () => Navigator.pop(dialogContext), 
+            child: Text(l10n.cancel, style: const TextStyle(color: Colors.grey)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () {
-              Navigator.pop(dialogContext); // إغلاق النافذة
-              context.read<CampaignsCubit>().logout(); // 🚀 استدعاء دالة الخروج من الكيوبت
+              Navigator.pop(dialogContext); 
+              context.read<CampaignsCubit>().logout(); 
             },
-            child: const Text('خروج', style: TextStyle(color: Colors.white)),
+            child: Text(l10n.logoutButton, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
   }
-  // 🔒 قفل الأمان الأول والثاني: التحقق قبل فتح نافذة الحملة
+
   void _validateAndShowScheduleDialog(
     BuildContext context,
     List<Group> groups,
     List<Map<String, dynamic>> devices, {
     Schedule? schedule,
   }) {
+    final l10n = context.l10n;
     if (groups.isEmpty) {
-      _showSnackBar(context, 'يجب إنشاء مجموعة أولاً! 📁', Colors.orange);
+      _showSnackBar(context, l10n.mustCreateGroupFirst, Colors.orange);
       return;
     }
-
     if (devices.isEmpty) {
       _showSnackBar(
         context,
-        'يجب ربط هاتف واحد على الأقل من (لوحة التحكم) قبل إنشاء حملة! 📱',
+        l10n.mustLinkDeviceFirst,
         Colors.redAccent,
         duration: const Duration(seconds: 4),
       );
       return;
     }
 
-    // إذا تم اجتياز الأقفال، نفتح النافذة
     showDialog(
       context: context,
       builder: (_) => BlocProvider.value(
-        value: context.read<CampaignsCubit>(), // تمرير الـ Cubit للنافذة المنبثقة
+        value: context.read<CampaignsCubit>(), 
         child: _ScheduleDialogWidget(
           groups: groups,
           devices: devices,
@@ -105,25 +130,27 @@ class CampaignsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('الحملات والمجموعات', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(l10n.campaignsAndGroupsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
           elevation: 0,
-          actions:[
+          actions: [
             IconButton(
               icon: const Icon(Icons.logout, color: Colors.redAccent),
-              tooltip: 'تسجيل خروج',
+              tooltip: l10n.logoutTooltip,
               onPressed: () => _showLogoutConfirmation(context),
             ),
           ],
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
-            tabs:[
-              Tab(icon: Icon(Icons.rocket_launch), text: 'الحملات'),
-              Tab(icon: Icon(Icons.group), text: 'المجموعات'),
+            tabs: [
+              Tab(icon: const Icon(Icons.rocket_launch), text: l10n.navCampaigns),
+              Tab(icon: const Icon(Icons.group), text: l10n.tabGroups),
             ],
           ),
         ),
@@ -133,11 +160,14 @@ class CampaignsView extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is CampaignsError) {
               return Center(
-                child: Text(state.message, style: const TextStyle(color: Colors.red, fontSize: 16)),
+                child: Text(
+                  _getLocalizedCampaignError(context, state.message), 
+                  style: const TextStyle(color: Colors.red, fontSize: 16),
+                ),
               );
             } else if (state is CampaignsLoaded) {
               return TabBarView(
-                children:[
+                children: [
                   _buildCampaignsTab(context, state.schedules, state.groups, state.devices),
                   _buildGroupsTab(context, state.groups),
                 ],
@@ -150,25 +180,30 @@ class CampaignsView extends StatelessWidget {
     );
   }
 
-  // ==========================================
-  // واجهة تبويب الحملات (تصميم محمي من التداخل 🛡️)
-  // ==========================================
   Widget _buildCampaignsTab(
     BuildContext context,
     List<Schedule> schedules,
     List<Group> groups,
     List<Map<String, dynamic>> devices,
   ) {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: schedules.isEmpty
-          ? const Center(child: Text('لا توجد حملات أتمتة بعد. قم بإنشاء حملة 🚀', style: TextStyle(fontSize: 16)))
+          ? Center(child: Text(l10n.noCampaignsYet, style: const TextStyle(fontSize: 16)))
           : ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: schedules.length,
               itemBuilder: (context, i) {
                 final schedule = schedules[i];
-                final groupName = groups.firstWhere((g) => g.id == schedule.groupId, orElse: () => const Group(id: '-1', name: 'مجموعة محذوفة', isDeleted: true)).name;
-                final deviceName = devices.firstWhere((d) => d['device_id'] == schedule.targetDeviceId, orElse: () => {'device_name': 'جهاز غير محدد'})['device_name'];
+                final groupName = groups.firstWhere(
+                  (g) => g.id == schedule.groupId, 
+                  orElse: () => Group(id: '-1', name: l10n.deletedGroup, isDeleted: true),
+                ).name;
+                final deviceName = devices.firstWhere(
+                  (d) => d['device_id'] == schedule.targetDeviceId, 
+                  orElse: () => {'device_name': l10n.unspecifiedDevice},
+                )['device_name'];
                 final time = TimeOfDay(hour: schedule.sendHour, minute: schedule.sendMinute).format(context);
 
                 return Card(
@@ -181,55 +216,57 @@ class CampaignsView extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
-                        children:[
+                        children: [
                           const CircleAvatar(
                             radius: 24,
                             backgroundColor: Colors.teal,
                             child: Icon(Icons.sms, color: Colors.white),
                           ),
                           const SizedBox(width: 16),
-                          // 🌟 استخدام Expanded يمنع النص الطويل من دفع الزر خارج الشاشة
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:[
-                                Text('مجموعة: $groupName', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              children: [
+                                Text(
+                                  l10n.groupLabel(groupName), 
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
                                 const SizedBox(height: 4),
                                 Text(schedule.message, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.grey[700])),
                                 const SizedBox(height: 8),
-                                
-                                // 🌟 ترتيب الجهاز والوقت عمودياً لتجنب التداخل إذا كان اسم الجهاز طويلاً جداً
                                 Row(
-                                  children:[
+                                  children: [
                                     const Icon(Icons.phone_android, size: 14, color: Colors.deepOrange),
                                     const SizedBox(width: 4),
                                     Expanded(
                                       child: Text(
                                         deviceName, 
                                         style: const TextStyle(color: Colors.deepOrange, fontSize: 12, fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis, // يضع ثلاث نقاط ... إذا كان الاسم طويلاً جداً
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 4),
                                 Row(
-                                  children:[
+                                  children: [
                                     const Icon(Icons.calendar_month, size: 14, color: Colors.teal),
                                     const SizedBox(width: 4),
-                                    Text('يوم ${schedule.sendDay} - الساعة $time', style: const TextStyle(color: Colors.teal, fontSize: 12, fontWeight: FontWeight.bold)),
+                                    Text(
+                                      l10n.scheduleTimeFormat(schedule.sendDay, time), 
+                                      style: const TextStyle(color: Colors.teal, fontSize: 12, fontWeight: FontWeight.bold),
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
                           const SizedBox(width: 8),
-                          // 🌟 زر التشغيل والإيقاف (مع ألوان واضحة في حالتي التشغيل والإطفاء)
                           Switch(
                             value: schedule.isActive,
                             activeColor: Colors.teal,
-                            inactiveThumbColor: Colors.grey, // لون الدائرة وهي مطفأة
-                            inactiveTrackColor: Colors.grey.shade300, // لون المسار وهو مطفأ
+                            inactiveThumbColor: Colors.grey, 
+                            inactiveTrackColor: Colors.grey.shade300, 
                             onChanged: (_) => context.read<CampaignsCubit>().toggleScheduleActive(schedule),
                           ),
                         ],
@@ -242,18 +279,17 @@ class CampaignsView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _validateAndShowScheduleDialog(context, groups, devices),
         icon: const Icon(Icons.add),
-        label: const Text('حملة جديدة'),
+        label: Text(l10n.newCampaign),
       ),
     );
   }
 
-  // ==========================================
-  // واجهة تبويب المجموعات
-  // ==========================================
   Widget _buildGroupsTab(BuildContext context, List<Group> groups) {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: groups.isEmpty
-          ? const Center(child: Text('لا توجد مجموعات بعد. قم بإنشاء مجموعة 📁', style: TextStyle(fontSize: 16)))
+          ? Center(child: Text(l10n.noGroupsYet, style: const TextStyle(fontSize: 16)))
           : ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: groups.length,
@@ -276,7 +312,7 @@ class CampaignsView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showGroupDialog(context),
         icon: const Icon(Icons.add),
-        label: const Text('مجموعة جديدة'),
+        label: Text(l10n.newGroup),
       ),
     );
   }
@@ -292,9 +328,6 @@ class CampaignsView extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 💡 نافذة إضافة/تعديل الحملة (تم فصلها باحترافية)
-// ==========================================
 class _ScheduleDialogWidget extends StatefulWidget {
   final List<Group> groups;
   final List<Map<String, dynamic>> devices;
@@ -312,8 +345,7 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
   late TextEditingController _dayController;
   Group? _selectedGroup;
   String? _selectedDeviceId;
-  late TimeOfDay _selectedTime; // 🌟 إضافة متغير الوقت
-
+  late TimeOfDay _selectedTime; 
   bool get _isEditing => widget.schedule != null;
 
   @override
@@ -321,18 +353,13 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
     super.initState();
     _messageController = TextEditingController(text: _isEditing ? widget.schedule!.message : '');
     _dayController = TextEditingController(text: _isEditing ? widget.schedule!.sendDay.toString() : '');
-    
-    // 🌟 تهيئة الوقت (من الحملة أو 9 صباحاً كافتراضي)
     _selectedTime = _isEditing 
         ? TimeOfDay(hour: widget.schedule!.sendHour, minute: widget.schedule!.sendMinute) 
         : const TimeOfDay(hour: 9, minute: 0);
-
-    // تحديد المجموعة 
     _selectedGroup = _isEditing
         ? widget.groups.firstWhere((g) => g.id == widget.schedule!.groupId, orElse: () => widget.groups.first)
         : widget.groups.first;
 
-    // تحديد الجهاز
     if (_isEditing && widget.schedule!.targetDeviceId != null) {
       final deviceExists = widget.devices.any((d) => d['device_id'] == widget.schedule!.targetDeviceId);
       _selectedDeviceId = deviceExists ? widget.schedule!.targetDeviceId : widget.devices.first['device_id'];
@@ -353,14 +380,13 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
       final cubit = context.read<CampaignsCubit>();
       final day = int.parse(_dayController.text);
       final msg = _messageController.text.trim();
-
       if (_isEditing) {
         cubit.editSchedule(
           originalSchedule: widget.schedule!,
           newMessage: msg,
           newSendDay: day,
-          newSendHour: _selectedTime.hour, // 🌟 إرسال الساعة
-          newSendMinute: _selectedTime.minute, // 🌟 إرسال الدقيقة
+          newSendHour: _selectedTime.hour, 
+          newSendMinute: _selectedTime.minute, 
           newTargetDeviceId: _selectedDeviceId,
         );
       } else {
@@ -368,8 +394,8 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
           groupId: _selectedGroup!.id,
           message: msg,
           sendDay: day,
-          sendHour: _selectedTime.hour, // 🌟 إرسال الساعة
-          sendMinute: _selectedTime.minute, // 🌟 إرسال الدقيقة
+          sendHour: _selectedTime.hour, 
+          sendMinute: _selectedTime.minute, 
           targetDeviceId: _selectedDeviceId,
         );
       }
@@ -379,54 +405,51 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: Text(_isEditing ? 'تعديل الحملة 🚀' : 'حملة أتمتة جديدة 🚀', style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(_isEditing ? l10n.editCampaignTitle : l10n.newCampaignTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children:[
+            children: [
               DropdownButtonFormField<Group>(
                 value: _selectedGroup,
-                decoration: InputDecoration(labelText: 'اختر المجموعة', border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                decoration: InputDecoration(labelText: l10n.selectGroupLabel, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 items: widget.groups.map((g) => DropdownMenuItem(value: g, child: Text(g.name))).toList(),
                 onChanged: (val) => setState(() => _selectedGroup = val),
               ),
               const SizedBox(height: 16),
-              
               DropdownButtonFormField<String?>(
                 value: _selectedDeviceId,
-                decoration: InputDecoration(labelText: 'الهاتف المرسل 📱', border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                decoration: InputDecoration(labelText: l10n.sendingPhoneLabel, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 items: widget.devices.map((d) => DropdownMenuItem(value: d['device_id'] as String?, child: Text(d['device_name']))).toList(),
                 onChanged: (val) => setState(() => _selectedDeviceId = val),
-                validator: (val) => val == null ? 'يرجى اختيار هاتف للإرسال' : null,
+                validator: (val) => val == null ? l10n.pleaseSelectDevice : null,
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 controller: _messageController,
                 maxLines: 3,
-                decoration: InputDecoration(labelText: 'نص الرسالة (SMS)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-                validator: (val) => val == null || val.trim().isEmpty ? 'يرجى كتابة نص الرسالة' : null,
+                decoration: InputDecoration(labelText: l10n.smsMessageLabel, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                validator: (val) => val == null || val.trim().isEmpty ? l10n.pleaseEnterMessage : null,
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 controller: _dayController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'يوم الإرسال (1 - 31)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                decoration: InputDecoration(labelText: l10n.sendDayLabel, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'يرجى تحديد اليوم';
+                  if (val == null || val.isEmpty) return l10n.pleaseSpecifyDay;
                   final day = int.tryParse(val);
-                  if (day == null || day < 1 || day > 31) return 'أدخل رقماً صحيحاً بين 1 و 31';
+                  if (day == null || day < 1 || day > 31) return l10n.enterValidDayNumber;
                   return null;
                 },
               ),
               const SizedBox(height: 16),
-              
-              // 🌟 زر اختيار الوقت المحدث
               InkWell(
                 onTap: () async {
                   final picked = await showTimePicker(context: context, initialTime: _selectedTime);
@@ -440,9 +463,12 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
                   decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(10)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:[
+                    children: [
                       const Icon(Icons.access_time, color: Colors.teal),
-                      Text('وقت الإرسال: ${_selectedTime.format(context)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        l10n.sendingTimeFormat(_selectedTime.format(context)), 
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                       const Icon(Icons.edit, size: 20, color: Colors.grey),
                     ],
                   ),
@@ -452,29 +478,26 @@ class _ScheduleDialogWidgetState extends State<_ScheduleDialogWidget> {
           ),
         ),
       ),
-      actions:[
+      actions: [
         if (_isEditing)
           TextButton(
             onPressed: () {
               context.read<CampaignsCubit>().deleteSchedule(widget.schedule!);
               Navigator.pop(context);
             },
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
           ),
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           onPressed: _save,
-          child: const Text('حفظ', style: TextStyle(color: Colors.white)),
+          child: Text(l10n.save, style: const TextStyle(color: Colors.white)),
         ),
       ],
     );
   }
 }
 
-// ==========================================
-// 💡 نافذة إضافة/تعديل المجموعة
-// ==========================================
 class _GroupDialogWidget extends StatefulWidget {
   final Group? group;
   const _GroupDialogWidget({this.group});
@@ -486,7 +509,6 @@ class _GroupDialogWidget extends StatefulWidget {
 class _GroupDialogWidgetState extends State<_GroupDialogWidget> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
-
   bool get _isEditing => widget.group != null;
 
   @override
@@ -503,27 +525,33 @@ class _GroupDialogWidgetState extends State<_GroupDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: Text(_isEditing ? 'تعديل المجموعة' : 'مجموعة جديدة'),
+      title: Text(_isEditing ? l10n.editGroupTitle : l10n.newGroupTitle),
       content: Form(
         key: _formKey,
         child: TextFormField(
           controller: _nameController,
-          decoration: InputDecoration(labelText: 'اسم المجموعة', hintText: 'مثال: عملاء VIP', border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-          validator: (val) => val == null || val.trim().isEmpty ? 'يرجى إدخال اسم للمجموعة' : null,
+          decoration: InputDecoration(
+            labelText: l10n.groupNameLabel, 
+            hintText: l10n.groupNameHint, 
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          validator: (val) => val == null || val.trim().isEmpty ? l10n.pleaseEnterGroupName : null,
         ),
       ),
-      actions:[
+      actions: [
         if (_isEditing)
           TextButton(
             onPressed: () {
               context.read<CampaignsCubit>().deleteGroup(widget.group!);
               Navigator.pop(context);
             },
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
           ),
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           onPressed: () {
@@ -534,7 +562,7 @@ class _GroupDialogWidgetState extends State<_GroupDialogWidget> {
               Navigator.pop(context);
             }
           },
-          child: const Text('حفظ', style: TextStyle(color: Colors.white)),
+          child: Text(l10n.save, style: const TextStyle(color: Colors.white)),
         ),
       ],
     );

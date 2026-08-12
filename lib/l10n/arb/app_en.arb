@@ -56,25 +56,15 @@
     "statusSyncSuccessUpload": "✅ Data uploaded to cloud successfully!",
 
     "statusLoadingFailed": "Failed to load data: {error}",
-    "@statusLoadingFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusLoadingFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusRegistrationFailed": "❌ Registration failed: {error}",
-    "@statusRegistrationFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusRegistrationFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusUnlinkFailed": "❌ Unlinking failed: {error}",
-    "@statusUnlinkFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusUnlinkFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusDeleteFailed": "❌ Deleting failed: {error}",
-    "@statusDeleteFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusDeleteFailed": { "placeholders": { "error": { "type": "String" } } },
     "statusSyncFailed": "❌ Sync failed: {error}",
-    "@statusSyncFailed": {
-        "placeholders": { "error": { "type": "String" } }
-    },
+    "@statusSyncFailed": { "placeholders": { "error": { "type": "String" } } },
 
     "contactsTitle": "Contacts (CRM)",
     "syncContactsTooltip": "Sync contacts from phone",
@@ -120,5 +110,61 @@
     "errEditContact": "Error editing contact: {error}",
     "@errEditContact": { "placeholders": { "error": { "type": "String" } } },
     "errSyncContacts": "Error syncing contacts: {error}",
-    "@errSyncContacts": { "placeholders": { "error": { "type": "String" } } }
+    "@errSyncContacts": { "placeholders": { "error": { "type": "String" } } },
+
+    "campaignsAndGroupsTitle": "Campaigns & Groups",
+    "logoutTooltip": "Logout",
+    "tabGroups": "Groups",
+    "logoutTitle": "Logout",
+    "logoutConfirmation": "Are you sure you want to log out of your account?",
+    "logoutButton": "Logout",
+    "noGroupsYet": "No groups yet. Create a group 📁",
+    "newGroup": "New Group",
+    "editGroupTitle": "Edit Group",
+    "newGroupTitle": "New Group",
+    "groupNameLabel": "Group Name",
+    "groupNameHint": "e.g. VIP Customers",
+    "pleaseEnterGroupName": "Please enter a group name",
+    "delete": "Delete",
+    "save": "Save",
+
+    "mustCreateGroupFirst": "You must create a group first! 📁",
+    "mustLinkDeviceFirst": "You must link at least one phone from (Dashboard) before creating a campaign! 📱",
+    "noCampaignsYet": "No automation campaigns yet. Create a campaign 🚀",
+    "groupLabel": "Group: {name}",
+    "@groupLabel": { "placeholders": { "name": { "type": "String" } } },
+    "deletedGroup": "Deleted Group",
+    "unspecifiedDevice": "Unspecified Device",
+    "scheduleTimeFormat": "Day {day} - Time {time}",
+    "@scheduleTimeFormat": { "placeholders": { "day": { "type": "int" }, "time": { "type": "String" } } },
+    "newCampaign": "New Campaign",
+    "editCampaignTitle": "Edit Campaign 🚀",
+    "newCampaignTitle": "New Automation Campaign 🚀",
+    "selectGroupLabel": "Select Group",
+    "sendingPhoneLabel": "Sending Phone 📱",
+    "pleaseSelectDevice": "Please select a sending phone",
+    "smsMessageLabel": "Message text (SMS)",
+    "pleaseEnterMessage": "Please enter message text",
+    "sendDayLabel": "Sending Day (1 - 31)",
+    "pleaseSpecifyDay": "Please specify the day",
+    "enterValidDayNumber": "Enter a valid number between 1 and 31",
+    "sendingTimeFormat": "Sending time: {time}",
+    "@sendingTimeFormat": { "placeholders": { "time": { "type": "String" } } },
+
+    "errCreateGroup": "Error creating group: {error}",
+    "@errCreateGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errDeleteGroup": "Error deleting group: {error}",
+    "@errDeleteGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errEditGroup": "Error editing group: {error}",
+    "@errEditGroup": { "placeholders": { "error": { "type": "String" } } },
+    "errLoadCampaignsData": "Failed to load local data: {error}",
+    "@errLoadCampaignsData": { "placeholders": { "error": { "type": "String" } } },
+    "errCreateSchedule": "Error creating campaign: {error}",
+    "@errCreateSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errDeleteSchedule": "Error deleting campaign: {error}",
+    "@errDeleteSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errEditSchedule": "Error editing campaign: {error}",
+    "@errEditSchedule": { "placeholders": { "error": { "type": "String" } } },
+    "errToggleScheduleActive": "Error toggling campaign status: {error}",
+    "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } }
 }

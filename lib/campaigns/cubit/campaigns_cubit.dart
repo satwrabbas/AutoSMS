@@ -18,18 +18,16 @@ class CampaignsCubit extends Cubit<CampaignsState> {
 
   final CrmRepository _repository;
 
-  /// 🌟 جلب البيانات (المدير سيتكفل بالإنترنت والمخبأ تلقائياً)
+  /// Fetch local data (groups, schedules, registered devices)
   Future<void> loadCampaignsData() async {
     emit(CampaignsLoading());
     try {
       final groups = await _repository.getGroups();
       final schedules = await _repository.getSchedules();
-      // 🌟 الكود عاد نظيفاً جداً هنا
       final devices = await _repository.getRegisteredDevices(); 
-      
       emit(CampaignsLoaded(groups: groups, schedules: schedules, devices: devices));
     } catch (e) {
-      emit(CampaignsError(message: 'حدث خطأ في جلب البيانات المحلية: $e'));
+      emit(CampaignsError(message: 'errLoadCampaignsData:$e'));
     }
   }
 
@@ -39,7 +37,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData(); 
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ في إنشاء المجموعة: $e'));
+      emit(CampaignsError(message: 'errCreateGroup:$e'));
     }
   }
 
@@ -61,12 +59,10 @@ class CampaignsCubit extends Cubit<CampaignsState> {
         targetDeviceId: targetDeviceId, 
       );
       await loadCampaignsData(); 
-
       _requestPermissionsAndLinkAsync();
       _repository.syncAllToCloud().catchError((_) {}); 
-
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ في إنشاء الحملة: $e'));
+      emit(CampaignsError(message: 'errCreateSchedule:$e'));
     }
   }
 
@@ -76,27 +72,33 @@ class CampaignsCubit extends Cubit<CampaignsState> {
         final smsGranted = await Telephony.instance.requestPhoneAndSmsPermissions;
         if (smsGranted == null || !smsGranted) return; 
       }
-
+      
       FirebaseMessaging messaging = FirebaseMessaging.instance;
-      await messaging.requestPermission(alert: false, badge: false, sound: false, provisional: false);
+      await messaging.requestPermission(
+        alert: false, 
+        badge: false, 
+        sound: false, 
+        provisional: false,
+      );
       
       final fcmToken = await messaging.getToken();
       if (fcmToken != null) {
         const androidIdPlugin = AndroidId();
-        final String hardwareId = await androidIdPlugin.getId() ?? 'unknown_device_${DateTime.now().millisecondsSinceEpoch}';
+        final String hardwareId = await androidIdPlugin.getId() ?? 
+            'unknown_device_${DateTime.now().millisecondsSinceEpoch}';
 
-        String deviceRealName = 'هاتف الإرسال';
+        String deviceRealName = 'Sending Phone';
         try {
           if (Platform.isAndroid) {
             final deviceInfo = DeviceInfoPlugin();
             final androidInfo = await deviceInfo.androidInfo;
-            final brand = androidInfo.brand.substring(0, 1).toUpperCase() + androidInfo.brand.substring(1);
+            final brand = androidInfo.brand.substring(0, 1).toUpperCase() + 
+                androidInfo.brand.substring(1);
             deviceRealName = '$brand ${androidInfo.model}'; 
           }
         } catch (_) {}
 
         final newDeviceId = await _repository.registerDevice(deviceRealName, fcmToken, hardwareId);
-        
         if (newDeviceId != null) {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('registered_device_id', newDeviceId);
@@ -104,7 +106,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
         }
       }
     } catch (e) {
-      print("⚠️ خطأ في الربط التلقائي (ربما لا يوجد إنترنت): $e");
+      print("⚠️ Auto-link error (maybe offline): $e");
     }
   }
 
@@ -114,7 +116,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData(); 
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ أثناء الحذف: $e'));
+      emit(CampaignsError(message: 'errDeleteGroup:$e'));
     }
   }
 
@@ -124,7 +126,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData();
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ أثناء التعديل: $e'));
+      emit(CampaignsError(message: 'errEditGroup:$e'));
     }
   }
 
@@ -134,7 +136,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData();
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ أثناء حذف الحملة: $e'));
+      emit(CampaignsError(message: 'errDeleteSchedule:$e'));
     }
   }
 
@@ -159,7 +161,7 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData();
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ أثناء تعديل الحملة: $e'));
+      emit(CampaignsError(message: 'errEditSchedule:$e'));
     }
   }
 
@@ -169,18 +171,15 @@ class CampaignsCubit extends Cubit<CampaignsState> {
       await loadCampaignsData(); 
       _repository.syncAllToCloud().catchError((_) {}); 
     } catch (e) {
-      emit(CampaignsError(message: 'خطأ أثناء تبديل حالة الحملة: $e'));
+      emit(CampaignsError(message: 'errToggleScheduleActive:$e'));
     }
   }
 
-  // 🌟 دالة تسجيل الخروج (آمنة ولا تدمر الواجهة)
   Future<void> logout() async {
     try {
       await _repository.signOut(); 
-      // الـ AuthGate ستتكفل بطرد المستخدم فوراً 🚪💨
     } catch (e) {
-      // نكتفي بالطباعة في الكواليس، لأن المدير الآن مجبر على الخروج بفضل finally
-      print("⚠️ خطأ غير متوقع أثناء تسجيل الخروج: $e");
+      print("⚠️ Unexpected logout error: $e");
     }
   }
 }
