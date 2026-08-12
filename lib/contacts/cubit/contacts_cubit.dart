@@ -27,7 +27,6 @@ class ContactsCubit extends Cubit<ContactsState> {
   Future<void> addManualContact(String name, String phone, String? groupId) async {
     try {
       await _repository.saveSyncedContacts([{'name': name, 'phone': phone}]);
-      
       if (groupId != null) {
         final allContacts = await _repository.getContacts();
         final newContact = allContacts.firstWhere(
@@ -38,11 +37,10 @@ class ContactsCubit extends Cubit<ContactsState> {
           await _repository.updateContactGroup(newContact, groupId);
         }
       }
-
       await loadContacts();
       _repository.syncAllToCloud();
     } catch (e) {
-      emit(ContactsError(message: 'خطأ في إضافة العميل: $e'));
+      emit(ContactsError(message: 'errAddContact:$e'));
     }
   }
 
@@ -52,7 +50,7 @@ class ContactsCubit extends Cubit<ContactsState> {
       await loadContacts(); 
       _repository.syncAllToCloud(); 
     } catch (e) {
-      emit(ContactsError(message: 'خطأ في تعيين المجموعة: $e'));
+      emit(ContactsError(message: 'errAssignGroup:$e'));
     }
   }
 
@@ -64,7 +62,7 @@ class ContactsCubit extends Cubit<ContactsState> {
       await loadContacts(); 
       _repository.syncAllToCloud(); 
     } catch (e) {
-      emit(ContactsError(message: 'خطأ في التعيين المتعدد: $e'));
+      emit(ContactsError(message: 'errAssignGroupMultiple:$e'));
     }
   }
 
@@ -74,7 +72,7 @@ class ContactsCubit extends Cubit<ContactsState> {
       await loadContacts();
       _repository.syncAllToCloud();
     } catch (e) {
-      emit(ContactsError(message: 'خطأ في الحذف: $e'));
+      emit(ContactsError(message: 'errDeleteContact:$e'));
     }
   }
 
@@ -84,7 +82,7 @@ class ContactsCubit extends Cubit<ContactsState> {
       await loadContacts();
       _repository.syncAllToCloud();
     } catch (e) {
-      emit(ContactsError(message: 'خطأ في التعديل: $e'));
+      emit(ContactsError(message: 'errEditContact:$e'));
     }
   }
 
@@ -94,13 +92,11 @@ class ContactsCubit extends Cubit<ContactsState> {
       final status = await phone_contacts.FlutterContacts.permissions.request(
         phone_contacts.PermissionType.read,
       );
-
       if (status == phone_contacts.PermissionStatus.granted || status == phone_contacts.PermissionStatus.limited) {
         final contactsFromPhone = await phone_contacts.FlutterContacts.getAll(
           properties: {phone_contacts.ContactProperty.name, phone_contacts.ContactProperty.phone},
         );
-
-        final List<Map<String, String>> formattedContacts =[];
+        final List<Map<String, String>> formattedContacts = [];
         for (var c in contactsFromPhone) {
           if (c.phones.isNotEmpty) {
             formattedContacts.add({
@@ -109,15 +105,14 @@ class ContactsCubit extends Cubit<ContactsState> {
             });
           }
         }
-
         await _repository.saveSyncedContacts(formattedContacts);
         await loadContacts();
         _repository.syncAllToCloud();
       } else {
-        emit(ContactsError(message: 'تم رفض صلاحية الوصول لجهات الاتصال'));
+        emit(ContactsError(message: 'errPermissionContacts'));
       }
     } catch (e) {
-      emit(ContactsError(message: 'حدث خطأ أثناء المزامنة: $e'));
+      emit(ContactsError(message: 'errSyncContacts:$e'));
     }
   }
 }
