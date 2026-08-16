@@ -166,6 +166,6 @@
     "errEditSchedule": "خطأ أثناء تعديل الحملة: {error}",
     "@errEditSchedule": { "placeholders": { "error": { "type": "String" } } },
     "errToggleScheduleActive": "خطأ أثناء تبديل حالة الحملة: {error}",
-    "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } }
-    "unnamedContact": "بدون اسم",
+    "@errToggleScheduleActive": { "placeholders": { "error": { "type": "String" } } },
+    "unnamedContact": "بدون اسم"
 }
