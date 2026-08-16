@@ -22,7 +22,10 @@ config.json
 .project
 .settings/
 .vscode/*
-
+# Repomix output files
+repomix-output.xml
+# Or use a wildcard if you generate other formats:
+repomix-output.*
 # packages file containing multi-root paths
 .packages.generated
 
