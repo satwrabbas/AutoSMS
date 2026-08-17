@@ -5,7 +5,7 @@ import 'package:cloud_storage_api/cloud_storage_api.dart';
 import 'package:crm_repository/crm_repository.dart'; 
 import 'package:supabase_flutter/supabase_flutter.dart'; 
 import 'package:auto_sms/app/app.dart';
-import 'package:auto_sms/app/config/env_config.dart'; // 🌟 Added EnvConfig import
+import 'package:auto_sms/app/config/env_config.dart';
 import 'package:auto_sms/bootstrap.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -21,18 +21,30 @@ import 'package:uuid/uuid.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   DartPluginRegistrant.ensureInitialized(); 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   
-  // 1. إيقاف تحذيرات Drift لكي لا ترتبك قاعدة البيانات عند فتح التطبيق
+  // 🌟 1. Prevent duplicate Firebase initialization in background isolate
+  if (Firebase.apps.isEmpty) {
+    try {
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    } catch (e) {
+      print("⚠️ Background Firebase init error: $e");
+    }
+  }
+
+  // 2. Stop Drift warnings during background execution
   drift.driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-  // 2. تهيئة Supabase في الخلفية باستخدام EnvConfig 🔑
-  await Supabase.initialize(
-    url: EnvConfig.supabaseUrl,
-    anonKey: EnvConfig.supabaseAnonKey,
-  );
+  // 3. Initialize Supabase in background isolate
+  try {
+    await Supabase.initialize(
+      url: EnvConfig.supabaseUrl,
+      anonKey: EnvConfig.supabaseAnonKey,
+    );
+  } catch (_) {
+    // Already initialized in isolate
+  }
 
-  // 🌟 جديد: إجبار الشبح على انتظار استعادة جلسة المستخدم (بحد أقصى 5 ثوانٍ)
+  // 🌟 Wait for user auth session recovery (max 5 seconds)
   int waitCount = 0;
   while (Supabase.instance.client.auth.currentUser == null && waitCount < 10) {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -46,7 +58,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
     if (groupId == null || smsBody == null) return;
 
-    // 3. تجهيز الأدوات (القاعدة المحلية + عميل السحابة + المدير + الـ SMS)
+    // Setup local database, cloud client, and repository
     final database = AppDatabase();
     final cloudClient = CloudStorageClient();
     final repository = CrmRepository(localStorage: database, cloudStorage: cloudClient);
@@ -57,7 +69,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
     if (targetContacts.isEmpty) return;
 
-    print("🚀 جاري إرسال [$smsBody] إلى ${targetContacts.length} عميل...");
+    print("🚀 Sending [$smsBody] to ${targetContacts.length} contacts...");
 
     const uuid = Uuid(); 
 
@@ -66,77 +78,86 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       int retryCount = 0;
       const int maxRetries = 3; 
 
-      // 🌟 حلقة الإرسال 
       while (!isSent && retryCount < maxRetries) {
         try {
-          print("➤ محاولة إرسال SMS للرقم ${contact.phone}...");
+          print("➤ Attempting SMS to ${contact.phone}...");
           telephony.sendSms(to: contact.phone, message: smsBody);
           isSent = true; 
         } catch (e) {
           retryCount++;
-          print("⚠️ فشل الإرسال (المحاولة $retryCount من $maxRetries): $e");
+          print("⚠️ Send failed (Attempt $retryCount of $maxRetries): $e");
           if (retryCount < maxRetries) {
             await Future.delayed(const Duration(seconds: 5)); 
           }
         }
       }
 
-      // 🌟 محاولة الحفظ في قاعدة البيانات المحلية
+      // Save log to local database
       try {
         await database.insertMessage(MessagesCompanion(
           id: drift.Value(uuid.v4()),
           phone: drift.Value(contact.phone),
-          body: drift.Value(isSent ? smsBody : "❌ فشل الإرسال: $smsBody"),
+          body: drift.Value(isSent ? smsBody : "❌ Send failed: $smsBody"),
           type: drift.Value(isSent ? 'sent_auto_fcm' : 'failed_auto_fcm'),
           messageDate: drift.Value(DateTime.now()),
         ));
-        print("✅ تم كتابة السجل في قاعدة البيانات للرقم: ${contact.phone}");
+        print("✅ Log saved locally for: ${contact.phone}");
       } catch (dbError) {
-        print("⚠️ تم الإرسال ولكن تعذر الحفظ محلياً: $dbError");
+        print("⚠️ Failed to save log locally: $dbError");
       }
 
       await Future.delayed(const Duration(seconds: 1)); 
     }
 
-    // 🌟 4. المزامنة الصامتة في الخلفية!
-    print("☁️ جاري رفع سجلات الإرسال الجديدة إلى السحابة...");
+    // Silent Cloud Sync
+    print("☁️ Syncing logs to cloud...");
     try {
       await repository.syncAllToCloud();
-      print("✅ تم رفع السجلات للسحابة بنجاح!");
+      print("✅ Logs synced to cloud successfully!");
     } catch (syncError) {
-      print("⚠️ تعذر الرفع للسحابة، سيتم الرفع لاحقاً عند فتح التطبيق: $syncError");
+      print("⚠️ Cloud sync failed, will sync next time app opens: $syncError");
     }
 
   } catch (e) {
-    print("❌ حدث خطأ جذري في مهمة الخلفية: $e");
+    print("❌ Fatal error in background task: $e");
   }
 }
 
 // ==========================================
-// 🚀 نقطة انطلاق التطبيق (Main)
+// 🚀 Main Entry Point
 // ==========================================
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. تهيئة فايربيس
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // 🌟 1. Prevent [core/duplicate-app] error on startup
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    print("⚠️ Firebase initialization warning: $e");
+  }
 
-  // 2. تسجيل دالة الاستماع في الخلفية (عند إغلاق التطبيق)
+  // 2. Register background listener
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // 3. تسجيل دالة الاستماع في الواجهة (والتطبيق مفتوح)
+  // 3. Register foreground listener
   FirebaseMessaging.onMessage.listen((message) {
-    print('🔔 إشارة وصلت والتطبيق مفتوح!');
+    print('🔔 Signal received while app is in foreground!');
     _firebaseMessagingBackgroundHandler(message);
   });
 
-  // 4. تهيئة Supabase باستخدام EnvConfig 🔑
-  await Supabase.initialize(
-    url: EnvConfig.supabaseUrl,
-    anonKey: EnvConfig.supabaseAnonKey,
-  );
+  // 4. Initialize Supabase safely
+  try {
+    await Supabase.initialize(
+      url: EnvConfig.supabaseUrl,
+      anonKey: EnvConfig.supabaseAnonKey,
+    );
+  } catch (e) {
+    print("⚠️ Supabase initialization warning: $e");
+  }
 
   final database = AppDatabase();
   final cloudClient = CloudStorageClient();
