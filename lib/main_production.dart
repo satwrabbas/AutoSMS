@@ -2,9 +2,10 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:local_storage_api/local_storage_api.dart';
 import 'package:cloud_storage_api/cloud_storage_api.dart'; 
-import 'package:crm_repository/crm_repository.dart'; // 🌟 السطر الذي كان مفقوداً!
+import 'package:crm_repository/crm_repository.dart'; 
 import 'package:supabase_flutter/supabase_flutter.dart'; 
 import 'package:auto_sms/app/app.dart';
+import 'package:auto_sms/app/config/env_config.dart'; // 🌟 Added EnvConfig import
 import 'package:auto_sms/bootstrap.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,10 +26,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // 1. إيقاف تحذيرات Drift لكي لا ترتبك قاعدة البيانات عند فتح التطبيق
   drift.driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-  // 2. تهيئة Supabase في الخلفية
+  // 2. تهيئة Supabase في الخلفية باستخدام EnvConfig 🔑
   await Supabase.initialize(
-    url: '***REMOVED_SUPABASE_URL***',
-    anonKey: '***REMOVED_SUPABASE_KEY***',
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
   );
 
   // 🌟 جديد: إجبار الشبح على انتظار استعادة جلسة المستخدم (بحد أقصى 5 ثوانٍ)
@@ -37,8 +38,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Future.delayed(const Duration(milliseconds: 500));
     waitCount++;
   }
-
-  
 
   try {
     final data = message.data;
@@ -63,7 +62,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     const uuid = Uuid(); 
 
     for (var contact in targetContacts) {
-      
       bool isSent = false;
       int retryCount = 0;
       const int maxRetries = 3; 
@@ -109,8 +107,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       print("⚠️ تعذر الرفع للسحابة، سيتم الرفع لاحقاً عند فتح التطبيق: $syncError");
     }
 
-    
-
   } catch (e) {
     print("❌ حدث خطأ جذري في مهمة الخلفية: $e");
   }
@@ -136,10 +132,10 @@ void main() async {
     _firebaseMessagingBackgroundHandler(message);
   });
 
-  // 4. تهيئة Supabase
+  // 4. تهيئة Supabase باستخدام EnvConfig 🔑
   await Supabase.initialize(
-    url: '***REMOVED_SUPABASE_URL***',
-    anonKey: '***REMOVED_SUPABASE_KEY***',
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
   );
 
   final database = AppDatabase();
@@ -147,6 +143,6 @@ void main() async {
 
   bootstrap(() => App(
     database: database,
-    cloudClient: cloudClient, 
+    cloudClienGt: cloudClient, 
   ));
 }
